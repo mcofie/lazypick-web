@@ -1,0 +1,50 @@
+# Nuxt Dev & Build
+.nuxt
+.output
+dist
+stats.html
+
+# Node & Dependencies
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm
+.yarn-integrity
+
+# Environment Variables (CRITICAL: Do not commit these)
+.env
+.env.production
+.env.development
+.env.local
+.env.*.local
+
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE & Editor Settings
+.idea
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/settings.json
+*.swp
+*.swo
+
+# Testing
+coverage
+.nyc_output
+
+# Vercel / Netlify (Deployment)
+.vercel
+.netlify
+
+# Supabase (If you use the CLI later)
+supabase/tmp
