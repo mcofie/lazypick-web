@@ -1,59 +1,78 @@
-import { defineEventHandler, createError } from 'h3'
+import { defineEventHandler, getQuery, createError } from 'h3'
 
-export default defineEventHandler(async (_event) => {
+export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig()
     const apiKey = config.tmdbApiKey
+    const query = getQuery(event)
+    const mood = query.mood as string || 'curious'
 
-    // 1. Get total pages for Netflix (Provider 8) in Ghana (GH)
+    // TMDB Genre IDs
+    // Action: 28, Comedy: 35, Drama: 18, Horror: 27, Romance: 10749, Sci-Fi: 878, Doc: 99
+
+    let genreString = ''
+
+    // VIBE MAPPING LOGIC
+    switch (mood) {
+        case 'chill':
+            genreString = '35,99,10751' // Comedy, Documentary, Family
+            break
+        case 'lit':
+            genreString = '28,12,878' // Action, Adventure, Sci-Fi
+            break
+        case 'sad':
+            genreString = '18,10749' // Drama, Romance
+            break
+        case 'romantic':
+            genreString = '10749' // Romance
+            break
+        case 'hungry':
+            // Movies about food? Or just light hearted stuff
+            genreString = '35,16' // Comedy, Animation
+            break
+        default:
+            genreString = '' // Any genre
+    }
+
     const discoveryUrl = 'https://api.themoviedb.org/3/discover/movie'
-    const baseParams = new URLSearchParams({
+    const params = new URLSearchParams({
         api_key: apiKey,
         include_adult: 'false',
         watch_region: 'GH',
         with_watch_providers: '8', // Netflix
         language: 'en-US',
-        sort_by: 'popularity.desc'
+        sort_by: 'popularity.desc',
+        with_genres: genreString // <--- FILTER APPLIED HERE
     })
 
-    interface TMDBMovie {
-        id: number
-        title: string
-        overview: string
-        poster_path: string
-        backdrop_path: string
-        vote_average: number
-        release_date: string
-    }
-
     try {
-        // Pick a random page (limit to top 20 pages to ensure quality)
-        const randomPage = Math.floor(Math.random() * 20) + 1
-        baseParams.append('page', randomPage.toString())
+        // ... (Keep the rest of your pagination logic mostly the same) ...
+        // NOTE: When filtering by specific genres, available pages might drop.
+        // Always fetch page 1 first to check 'total_pages' before randomizing.
 
-        // 2. Fetch the movies from that page
-        const data = await $fetch<{ results: TMDBMovie[] }>(`${discoveryUrl}?${baseParams.toString()}`)
+        const meta = await $fetch<{ total_pages: number }>(`${discoveryUrl}?${params.toString()}`)
+        const maxPages = meta.total_pages > 10 ? 10 : meta.total_pages
+
+        if (maxPages === 0) throw new Error("No movies for this vibe")
+
+        const randomPage = Math.floor(Math.random() * maxPages) + 1
+        params.append('page', randomPage.toString())
+
+        const data = await $fetch<{ results: TMDBMovie[] }>(`${discoveryUrl}?${params.toString()}`)
         const movies = data.results
 
         if (!movies.length) throw new Error("No movies found")
-
-        // 3. Pick one random movie
         const movie = movies[Math.floor(Math.random() * movies.length)]
-
-        if (!movie) throw new Error("Failed to pick a movie")
 
         return {
             id: movie.id,
             title: movie.title,
             overview: movie.overview,
             poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
-            backdrop: `https://image.tmdb.org/t/p/w780${movie.backdrop_path}`,
             rating: movie.vote_average,
             year: movie.release_date ? movie.release_date.split('-')[0] : 'N/A',
-            // Universal Netflix Search Link (safest bet without specific Netflix IDs)
             netflixUrl: `https://www.netflix.com/search?q=${encodeURIComponent(movie.title)}`
         }
-
     } catch {
-        throw createError({ statusCode: 500, statusMessage: 'Could not fetch movie' })
+        throw createError({ statusCode: 404, statusMessage: 'No movies found for this mood' })
     }
 })

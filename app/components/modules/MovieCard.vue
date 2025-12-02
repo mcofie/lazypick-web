@@ -1,10 +1,20 @@
 <script setup lang="ts">
 import {useDraggable} from '@vueuse/core'
 
+interface Movie {
+  title: string;
+  poster: string;
+  rating: number;
+  year: string;
+  description?: string;
+  overview?: string;
+  netflixUrl: string;
+}
+
 const props = defineProps<{
-  movie: any;
+  movie: Movie;
   loading: boolean;
-  mode: string; // <--- NEW PROP
+  mode: string;
 }>();
 
 const emit = defineEmits(['spin']);
@@ -52,65 +62,81 @@ const resetCard = () => {
 </script>
 
 <template>
-  <div class="relative w-full max-w-sm h-[500px] flex items-center justify-center">
+  <div class="relative w-full max-w-sm h-[540px] flex items-center justify-center perspective-1000">
 
     <div
         ref="card"
         :style="cardStyle"
-        class="absolute w-full h-full bg-gray-800 rounded-3xl overflow-hidden shadow-2xl z-20 touch-none select-none"
+        class="absolute w-full h-full bg-brand-surface rounded-[2rem] overflow-hidden shadow-2xl z-20 touch-none select-none border border-white/5"
     >
 
-      <div v-if="loading" class="absolute inset-0 bg-gray-900 animate-pulse flex items-center justify-center z-30">
-        <Icon name="svg-spinners:ring-resize" size="3em"
-              :class="mode === 'food' ? 'text-yellow-500' : 'text-brand-red'"/>
+      <div v-if="loading" class="absolute inset-0 bg-brand-surface animate-pulse flex items-center justify-center z-30">
+        <div class="flex flex-col items-center gap-4">
+          <Icon
+name="svg-spinners:ring-resize" size="3em"
+                :class="mode === 'food' ? 'text-yellow-500' : 'text-brand-red'"/>
+          <p class="text-xs font-bold uppercase tracking-widest text-gray-500">Finding the best...</p>
+        </div>
       </div>
 
-      <div v-else-if="movie" class="relative h-full w-full pointer-events-none">
-        <img :src="movie.poster" :alt="movie.title" class="absolute inset-0 w-full h-full object-cover"
-             draggable="false"/>
+      <div v-else-if="movie" class="relative h-full w-full pointer-events-none group">
+        <img
+:src="movie.poster" :alt="movie.title" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+             draggable="false">
 
-        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/40 to-transparent"/>
 
-        <div class="absolute bottom-0 left-0 w-full p-6 text-white pb-24">
-          <div class="flex items-center gap-2 mb-2 opacity-90 text-xs font-bold tracking-widest uppercase">
+        <div class="absolute bottom-0 left-0 w-full p-8 text-white pb-28">
+          <div class="flex items-center gap-3 mb-3 opacity-90 text-[10px] font-bold tracking-[0.2em] uppercase">
 
-            <span v-if="mode === 'movie'" class="bg-brand-red px-2 py-1 rounded">Netflix</span>
-            <span v-else class="bg-yellow-600 px-2 py-1 rounded">Food Spot</span>
+            <span v-if="mode === 'movie'" class="bg-brand-red/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-lg shadow-brand-red/20">Netflix</span>
+            <span v-else class="bg-yellow-600/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-lg shadow-yellow-600/20">Food Spot</span>
 
-            <span>★ {{ movie.rating?.toFixed(1) }}</span>
-            <span>{{ movie.year }}</span>
+            <span class="flex items-center gap-1"><Icon name="heroicons:star-solid" class="text-yellow-400"/> {{ movie.rating?.toFixed(1) }}</span>
+            <span class="text-gray-400">• {{ movie.year }}</span>
           </div>
-          <h2 class="text-3xl font-black leading-tight mb-2 drop-shadow-lg">{{ movie.title }}</h2>
-          <p class="text-sm text-gray-200 line-clamp-3 leading-relaxed drop-shadow-md">
+          <h2 class="text-4xl font-black leading-[0.95] mb-3 drop-shadow-xl font-display tracking-tight">{{ movie.title }}</h2>
+          <p class="text-sm text-gray-300 line-clamp-3 leading-relaxed drop-shadow-md font-light">
             {{ movie.description || movie.overview }}
           </p>
         </div>
 
-        <div v-if="x > 50"
-             class="absolute top-10 left-10 border-4 border-green-500 text-green-500 font-black text-4xl px-4 py-2 rounded -rotate-12 opacity-80">
+        <div
+v-if="x > 50"
+             class="absolute top-10 left-10 border-4 border-green-500 text-green-500 font-black text-5xl px-6 py-2 rounded-xl -rotate-12 opacity-0 animate-fade-in"
+             :style="{ opacity: Math.min(x / 100, 1) }">
           YES
         </div>
-        <div v-if="x < -50"
-             class="absolute top-10 right-10 border-4 border-red-500 text-red-500 font-black text-4xl px-4 py-2 rounded rotate-12 opacity-80">
+        <div
+v-if="x < -50"
+             class="absolute top-10 right-10 border-4 border-red-500 text-red-500 font-black text-5xl px-6 py-2 rounded-xl rotate-12 opacity-0 animate-fade-in"
+             :style="{ opacity: Math.min(Math.abs(x) / 100, 1) }">
           NO
         </div>
       </div>
 
     </div>
 
-    <div v-if="!loading"
-         class="absolute w-[95%] h-full bg-gray-700 rounded-3xl -z-10 scale-95 translate-y-3 opacity-50"></div>
+    <!-- Stack Effect -->
+    <div
+v-if="!loading"
+         class="absolute w-[92%] h-full bg-white/5 rounded-[2rem] -z-10 scale-95 translate-y-4 blur-sm border border-white/5"/>
+    <div
+v-if="!loading"
+         class="absolute w-[85%] h-full bg-white/5 rounded-[2rem] -z-20 scale-90 translate-y-8 blur-md border border-white/5"/>
 
-    <div class="absolute -bottom-24 left-0 w-full flex justify-center gap-6 px-6 z-10">
+    <div class="absolute -bottom-24 left-0 w-full flex justify-center gap-8 px-6 z-10">
 
-      <button @click="$emit('spin')" :disabled="loading"
-              class="h-16 w-16 rounded-full bg-gray-800 border border-gray-700 flex items-center justify-center text-red-500 hover:scale-110 transition active:scale-95 shadow-xl">
-        <Icon name="heroicons:x-mark" size="2em"/>
+      <button
+:disabled="loading" class="h-16 w-16 rounded-full glass flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300 active:scale-90 shadow-2xl hover:shadow-red-500/30 group"
+              @click="$emit('spin')">
+        <Icon name="heroicons:x-mark" size="2em" class="group-hover:rotate-90 transition-transform duration-300"/>
       </button>
 
-      <a v-if="movie" :href="movie.netflixUrl" target="_blank"
-         class="h-16 w-16 rounded-full bg-white flex items-center justify-center text-green-600 hover:scale-110 transition active:scale-95 shadow-xl">
-        <Icon name="heroicons:check" size="2em"/>
+      <a
+v-if="movie" :href="movie.netflixUrl" target="_blank"
+         class="h-16 w-16 rounded-full bg-white flex items-center justify-center text-brand-dark hover:scale-110 transition-all duration-300 active:scale-90 shadow-2xl hover:shadow-white/20">
+        <Icon name="heroicons:heart-solid" size="2em" class="text-brand-red animate-pulse"/>
       </a>
 
     </div>

@@ -12,6 +12,8 @@ export default defineNuxtConfig({
         '@nuxt/eslint'
     ],
 
+    css: ['~/assets/css/main.css'],
+
     // 2. Head Configuration (SEO & Mobile feel)
     app: {
         head: {
@@ -20,6 +22,11 @@ export default defineNuxtConfig({
                 { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' }, // Prevents zooming on mobile
                 { name: 'description', content: 'Stop scrolling. Start watching. The decision tool for Ghana.' },
                 { name: 'theme-color', content: '#000000' }
+            ],
+            link: [
+                { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+                { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+                { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&display=swap' }
             ]
         }
     },
