@@ -146,7 +146,7 @@ const fireConfetti = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-brand-dark text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
+  <div class="min-h-screen bg-brand-dark text-white flex flex-col items-center justify-center p-4 relative overflow-x-hidden">
     
     <!-- Animated Background Blobs -->
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-brand-red/20 blur-[120px] rounded-full pointer-events-none animate-pulse"/>

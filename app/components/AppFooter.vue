@@ -77,7 +77,7 @@ const toggleProvider = (id: string) => {
       <!-- Bottom Row: Settings & Links -->
       <div class="flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-gray-500 font-medium uppercase tracking-widest border-t border-white/5 pt-6">
         
-        <div class="flex items-center gap-6">
+        <div class="flex flex-wrap justify-center gap-6">
           <div class="flex items-center gap-2 group relative">
             <Icon name="heroicons:globe-alt" class="w-4 h-4 text-gray-600 group-hover:text-gray-400 transition-colors"/>
             <select 
@@ -105,12 +105,12 @@ const toggleProvider = (id: string) => {
           </div>
         </div>
 
-        <div class="flex items-center gap-4 opacity-50">
+        <div class="flex flex-wrap justify-center items-center gap-4 opacity-50 text-center">
           <NuxtLink to="/privacy" class="hover:text-white transition-colors">{{ t('footer.privacy') }}</NuxtLink>
           <span>•</span>
           <NuxtLink to="/terms" class="hover:text-white transition-colors">{{ t('footer.terms') }}</NuxtLink>
-          <span>•</span>
-          <span>© {{ new Date().getFullYear() }} LazyPick</span>
+          <span class="hidden sm:inline">•</span>
+          <span class="w-full sm:w-auto">© {{ new Date().getFullYear() }} LazyPick</span>
         </div>
 
       </div>

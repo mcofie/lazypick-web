@@ -89,7 +89,7 @@ const resetVibe = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-brand-dark flex flex-col items-center justify-center p-4 relative text-white overflow-hidden">
+  <div class="min-h-screen bg-brand-dark flex flex-col items-center justify-center p-4 relative text-white overflow-x-hidden">
 
     <!-- Background Elements -->
     <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-red/10 blur-[100px] rounded-full pointer-events-none animate-float"/>

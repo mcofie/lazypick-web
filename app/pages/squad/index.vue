@@ -81,7 +81,7 @@ const joinLobby = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-brand-dark text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
+  <div class="min-h-screen bg-brand-dark text-white flex flex-col items-center justify-center p-6 relative overflow-x-hidden">
 
     <!-- Animated Background Blobs -->
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-brand-red/20 blur-[120px] rounded-full pointer-events-none animate-pulse"/>
@@ -112,16 +112,16 @@ const joinLobby = async () => {
                  class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-red/50 focus:bg-white/10 transition-all text-lg font-medium">
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="flex flex-col md:grid md:grid-cols-2 gap-4">
           <button @click="createLobby('movie')" :disabled="loading"
-                  class="group relative h-32 bg-white/5 border border-white/10 rounded-2xl hover:bg-brand-red/20 hover:border-brand-red/30 transition-all duration-300 flex flex-col items-center justify-center gap-2">
-            <Icon name="heroicons:film" class="w-8 h-8 text-gray-400 group-hover:text-brand-red transition-colors"/>
+                  class="group relative h-24 md:h-32 bg-white/5 border border-white/10 rounded-2xl hover:bg-brand-red/20 hover:border-brand-red/30 transition-all duration-300 flex flex-row md:flex-col items-center justify-center gap-3 md:gap-2">
+            <Icon name="heroicons:film" class="w-6 h-6 md:w-8 md:h-8 text-gray-400 group-hover:text-brand-red transition-colors"/>
             <span class="font-bold font-display text-sm">{{ t('squad.movie_squad') }}</span>
           </button>
 
           <button @click="createLobby('food')" :disabled="loading"
-                  class="group relative h-32 bg-white/5 border border-white/10 rounded-2xl hover:bg-yellow-500/20 hover:border-yellow-500/30 transition-all duration-300 flex flex-col items-center justify-center gap-2">
-            <Icon name="heroicons:cake" class="w-8 h-8 text-gray-400 group-hover:text-yellow-500 transition-colors"/>
+                  class="group relative h-24 md:h-32 bg-white/5 border border-white/10 rounded-2xl hover:bg-yellow-500/20 hover:border-yellow-500/30 transition-all duration-300 flex flex-row md:flex-col items-center justify-center gap-3 md:gap-2">
+            <Icon name="heroicons:cake" class="w-6 h-6 md:w-8 md:h-8 text-gray-400 group-hover:text-yellow-500 transition-colors"/>
             <span class="font-bold font-display text-sm">{{ t('squad.food_squad') }}</span>
           </button>
         </div>
@@ -131,11 +131,11 @@ const joinLobby = async () => {
           <div class="relative flex justify-center"><span class="bg-brand-surface px-4 text-xs text-gray-500 uppercase tracking-widest font-bold">{{ t('squad.or_join') }}</span></div>
         </div>
 
-        <div class="flex gap-2">
+        <div class="flex flex-col sm:flex-row gap-3">
           <input v-model="roomCode" type="text" :placeholder="t('squad.room_code')" maxlength="6"
                  class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-red/50 focus:bg-white/10 transition-all text-lg font-medium uppercase tracking-widest text-center">
           <button @click="joinLobby" :disabled="loading"
-                  class="bg-white text-black font-bold px-6 rounded-xl hover:bg-gray-200 transition-colors font-display tracking-wide">
+                  class="bg-white text-black font-bold px-6 py-3 sm:py-0 rounded-xl hover:bg-gray-200 transition-colors font-display tracking-wide w-full sm:w-auto">
             {{ t('squad.enter_room') }}
           </button>
         </div>
