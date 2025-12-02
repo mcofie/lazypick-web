@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
     const mood = query.mood as string || 'curious'
     const region = query.region as string || 'GH'
     const locale = query.locale as string || 'en'
+    const providers = query.providers as string || '8' // Default to Netflix
 
     // TMDB Genre IDs
     // Action: 28, Comedy: 35, Drama: 18, Horror: 27, Romance: 10749, Sci-Fi: 878, Doc: 99
@@ -57,7 +58,7 @@ export default defineEventHandler(async (event) => {
         api_key: apiKey,
         include_adult: 'false',
         watch_region: region,
-        with_watch_providers: '8', // Netflix
+        with_watch_providers: providers, // <--- DYNAMIC PROVIDERS
         language: tmdbLang,
         sort_by: 'popularity.desc',
         with_genres: genreString // <--- FILTER APPLIED HERE
@@ -82,6 +83,42 @@ export default defineEventHandler(async (event) => {
         if (!movies.length) throw new Error("No movies found")
         const movie = movies[Math.floor(Math.random() * movies.length)]
 
+        // Fetch Watch Providers
+        let providerInfo = null
+        try {
+            const providerData = await $fetch<any>(`https://api.themoviedb.org/3/movie/${movie.id}/watch/providers?api_key=${apiKey}`)
+            const regionProviders = providerData.results[region]
+
+            if (regionProviders && regionProviders.flatrate) {
+                // If user filtered by providers, try to match one of them
+                if (providers) {
+                    const userProviders = providers.split('|') // '8|9' -> ['8', '9']
+                    const match = regionProviders.flatrate.find((p: any) => userProviders.includes(p.provider_id.toString()))
+                    if (match) providerInfo = match
+                }
+
+                // Fallback: just take the first one if no match or no filter
+                if (!providerInfo) {
+                    providerInfo = regionProviders.flatrate[0]
+                }
+            }
+        } catch (e) {
+            // Ignore provider fetch errors, just don't show logo
+        }
+
+        // Generate Smart Watch Link
+        let watchUrl = `https://www.google.com/search?q=watch+${encodeURIComponent(movie.title)}`
+
+        if (providerInfo) {
+            const pid = providerInfo.provider_id.toString()
+            const encodedTitle = encodeURIComponent(movie.title)
+
+            if (pid === '8') watchUrl = `https://www.netflix.com/search?q=${encodedTitle}`
+            else if (pid === '9') watchUrl = `https://www.amazon.com/s?k=${encodedTitle}`
+            else if (pid === '337') watchUrl = `https://www.disneyplus.com/search?q=${encodedTitle}`
+            else if (pid === '350') watchUrl = `https://tv.apple.com/search?term=${encodedTitle}`
+        }
+
         return {
             id: movie.id,
             title: movie.title,
@@ -89,7 +126,11 @@ export default defineEventHandler(async (event) => {
             poster: `https://image.tmdb.org/t/p/w500${movie.poster_path}`,
             rating: movie.vote_average,
             year: movie.release_date ? movie.release_date.split('-')[0] : 'N/A',
-            netflixUrl: `https://www.netflix.com/search?q=${encodeURIComponent(movie.title)}`
+            watchUrl, // <--- Dynamic URL
+            provider: providerInfo ? {
+                name: providerInfo.provider_name,
+                logo: `https://image.tmdb.org/t/p/original${providerInfo.logo_path}`
+            } : null
         }
     } catch {
         throw createError({ statusCode: 404, statusMessage: 'No movies found for this mood' })

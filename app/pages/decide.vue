@@ -49,13 +49,15 @@ const spin = async () => {
     const endpoint = mode.value === 'movie' ? '/api/movies/random' : '/api/food/random'
     const region = useState('region')
     const locale = useState('locale')
+    const providers = useState<string[]>('providers')
 
     // Pass the mood as a query parameter
     const response = await $fetch(endpoint, {
       params: {
         mood: mood.value,
         region: region.value,
-        locale: locale.value
+        locale: locale.value,
+        providers: providers.value.join('|') // OR logic
       }
     })
 
@@ -70,8 +72,8 @@ const spin = async () => {
 
 // Handle Card Choice
 const handleChoice = (liked: boolean) => {
-  if (liked && data.value?.netflixUrl) {
-    window.open(data.value.netflixUrl, '_blank')
+  if (liked && data.value?.watchUrl) {
+    window.open(data.value.watchUrl, '_blank')
     // Optionally fetch next card after returning? For now just keep current or reset.
     // spin() // Uncomment if we want auto-next after like
   } else {

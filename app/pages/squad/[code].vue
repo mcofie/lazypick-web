@@ -81,13 +81,15 @@ const loadMoreCards = async () => {
   const endpoint = lobby.value.mode === 'movie' ? '/api/movies/random' : '/api/food/random'
   const region = useState('region')
   const locale = useState('locale')
+  const providers = useState<string[]>('providers')
 
   // Fetch 5 cards for the game
   for (let i = 0; i < 5; i++) {
     const data = await $fetch(endpoint, {
       params: {
         region: region.value,
-        locale: locale.value
+        locale: locale.value,
+        providers: providers.value.join('|')
       }
     })
     stack.value.push(data)
@@ -229,7 +231,7 @@ const fireConfetti = () => {
         <h2 class="text-3xl font-bold font-display">{{ matchResult.title }}</h2>
       </div>
 
-      <a :href="matchResult.netflixUrl" target="_blank"
+      <a :href="matchResult.watchUrl" target="_blank"
          class="block w-full py-5 bg-green-600 rounded-2xl font-bold text-lg hover:bg-green-700 hover:scale-[1.02] hover:shadow-xl hover:shadow-green-500/20 transition-all duration-300 font-display tracking-wide">
         {{ t('squad.open_now') }}
       </a>

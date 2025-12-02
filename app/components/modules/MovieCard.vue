@@ -82,7 +82,10 @@ name="svg-spinners:ring-resize" size="3em"
         <div class="absolute bottom-0 left-0 w-full p-8 text-white pb-28">
           <div class="flex items-center gap-3 mb-3 opacity-90 text-[10px] font-bold tracking-[0.2em] uppercase">
 
-            <span v-if="mode === 'movie'" class="bg-brand-red/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-lg shadow-brand-red/20">Netflix</span>
+            <div v-if="mode === 'movie'" class="flex items-center gap-2 bg-black/40 backdrop-blur-md pl-1 pr-3 py-1 rounded-full border border-white/10 shadow-lg">
+              <img v-if="movie.provider?.logo" :src="movie.provider.logo" class="w-4 h-4 rounded-full" alt="Provider">
+              <span class="text-white/90">{{ movie.provider?.name || 'Watch Now' }}</span>
+            </div>
             <span v-else class="bg-yellow-600/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-lg shadow-yellow-600/20">Food Spot</span>
 
             <span class="flex items-center gap-1"><Icon name="heroicons:star-solid" class="text-yellow-400"/> {{ movie.rating?.toFixed(1) }}</span>
