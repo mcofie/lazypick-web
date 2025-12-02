@@ -1,134 +1,145 @@
 <script setup lang="ts">
 const client = useSupabaseClient()
 const router = useRouter()
+const { t } = useTranslations()
 
 const name = ref('')
-const joinCode = ref('')
+const roomCode = ref('')
 const loading = ref(false)
 
-// 1. Create Lobby Logic
+onMounted(() => {
+  name.value = localStorage.getItem('squad_name') || ''
+})
+
 const createLobby = async (mode: 'movie' | 'food') => {
-  if (!name.value) return alert('Enter your name first!')
+  if (!name.value) return alert('Please enter your name')
   loading.value = true
 
-  const code = Math.random().toString(36).substring(2, 6).toUpperCase()
+  // Save name
+  localStorage.setItem('squad_name', name.value)
 
-  // Explicit Schema: lazypick
-  const {error: lobbyErr} = await client
-      .schema('lazypick')
-      .from('lobbies')
-      .insert({code, mode, status: 'waiting'})
+  // Generate Code
+  const code = Math.random().toString(36).substring(2, 8).toUpperCase()
 
-  if (lobbyErr) {
+  // Create Lobby
+  const { error } = await client.schema('lazypick').from('lobbies').insert({
+    code,
+    mode,
+    status: 'waiting'
+  })
+
+  if (error) {
+    console.error(error)
+    alert('Failed to create lobby')
     loading.value = false
-    return alert('Error creating lobby: ' + lobbyErr.message)
+    return
   }
 
-  // Add Host
-  const {data: user, error: partErr} = await client
-      .schema('lazypick')
-      .from('participants')
-      .insert({lobby_code: code, name: name.value})
-      .select()
-      .single()
+  // Add Host as Participant
+  const userId = crypto.randomUUID()
+  localStorage.setItem(`squad_user_${code}`, userId)
 
-  if (partErr) return alert('Error joining: ' + partErr.message)
+  await client.schema('lazypick').from('participants').insert({
+    lobby_code: code,
+    name: name.value,
+    id: userId,
+    is_host: true
+  })
 
-  // Save Session & Redirect
-  localStorage.setItem(`squad_user_${code}`, user.id)
   router.push(`/squad/${code}`)
 }
 
-// 2. Join Lobby Logic
 const joinLobby = async () => {
-  if (!name.value || !joinCode.value) return alert('Enter name and code!')
+  if (!name.value || !roomCode.value) return alert('Enter name and code')
   loading.value = true
-  const code = joinCode.value.toUpperCase()
 
-  // Check Lobby existence in 'lazypick' schema
-  const {data: lobby} = await client
-      .schema('lazypick')
-      .from('lobbies')
-      .select()
-      .eq('code', code)
-      .single()
+  const code = roomCode.value.toUpperCase()
+  localStorage.setItem('squad_name', name.value)
 
+  // Check if lobby exists
+  const { data: lobby } = await client.schema('lazypick').from('lobbies').select().eq('code', code).single()
+  
   if (!lobby) {
+    alert('Room not found')
     loading.value = false
-    return alert('Lobby not found!')
+    return
   }
 
   // Add Participant
-  const {data: user, error} = await client
-      .schema('lazypick')
-      .from('participants')
-      .insert({lobby_code: code, name: name.value})
-      .select()
-      .single()
+  const userId = crypto.randomUUID()
+  localStorage.setItem(`squad_user_${code}`, userId)
 
-  if (error) return alert('Could not join')
+  await client.schema('lazypick').from('participants').insert({
+    lobby_code: code,
+    name: name.value,
+    id: userId,
+    is_host: false
+  })
 
-  localStorage.setItem(`squad_user_${code}`, user.id)
   router.push(`/squad/${code}`)
 }
 </script>
 
 <template>
   <div class="min-h-screen bg-brand-dark text-white flex flex-col items-center justify-center p-6 relative overflow-hidden">
-    
+
     <!-- Animated Background Blobs -->
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-brand-red/20 blur-[120px] rounded-full pointer-events-none animate-pulse"/>
     <div class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-blue-900/10 blur-[100px] rounded-full pointer-events-none animate-float"/>
 
-    <div class="z-10 w-full max-w-md space-y-10 animate-fade-in">
+    <!-- Navigation -->
+    <div class="absolute top-6 left-0 w-full px-6 flex justify-between items-center z-50">
+      <NuxtLink to="/" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group">
+        <div class="p-2 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
+          <Icon name="heroicons:arrow-left" class="w-5 h-5"/>
+        </div>
+        <span class="text-sm font-bold font-display tracking-wide">{{ t('decide.menu') }}</span>
+      </NuxtLink>
+    </div>
 
+    <div class="z-10 w-full max-w-md space-y-8 animate-fade-in">
+      
       <div class="text-center space-y-2">
-        <h1 class="text-5xl font-black font-display tracking-tighter">
-          Squad <span class="text-gradient-red">Mode</span>
-        </h1>
-        <p class="text-gray-400 font-light">Sync up and decide together.</p>
+        <h1 class="text-5xl font-black font-display tracking-tighter drop-shadow-2xl">{{ t('squad.title') }}</h1>
+        <p class="text-gray-400 font-light">{{ t('squad.subtitle') }}</p>
       </div>
 
-      <div class="space-y-6 glass p-8 rounded-3xl">
+      <div class="glass p-8 rounded-[2rem] space-y-6">
+        
         <div class="space-y-2">
-          <label class="text-xs font-bold uppercase text-gray-500 tracking-wider">Your Name</label>
-          <input v-model="name" type="text" placeholder="e.g. Kwame"
-                 class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white placeholder-gray-600 focus:border-brand-red/50 focus:bg-white/10 focus:outline-none transition-all duration-300"/>
+          <label class="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">{{ t('squad.your_name') }}</label>
+          <input v-model="name" type="text" :placeholder="t('squad.name_placeholder')" 
+                 class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-red/50 focus:bg-white/10 transition-all text-lg font-medium">
         </div>
 
         <div class="grid grid-cols-2 gap-4">
           <button @click="createLobby('movie')" :disabled="loading"
-                  class="group relative overflow-hidden bg-white/5 hover:bg-white/10 border border-white/10 p-6 rounded-2xl flex flex-col items-center gap-3 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-brand-red/10">
-            <div class="absolute inset-0 bg-gradient-to-br from-brand-red/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
-            <Icon name="heroicons:film" size="2em" class="text-gray-400 group-hover:text-brand-red transition-colors duration-300"/>
-            <span class="font-bold text-sm font-display">Movie Squad</span>
+                  class="group relative h-32 bg-white/5 border border-white/10 rounded-2xl hover:bg-brand-red/20 hover:border-brand-red/30 transition-all duration-300 flex flex-col items-center justify-center gap-2">
+            <Icon name="heroicons:film" class="w-8 h-8 text-gray-400 group-hover:text-brand-red transition-colors"/>
+            <span class="font-bold font-display text-sm">{{ t('squad.movie_squad') }}</span>
           </button>
-          
+
           <button @click="createLobby('food')" :disabled="loading"
-                  class="group relative overflow-hidden bg-white/5 hover:bg-white/10 border border-white/10 p-6 rounded-2xl flex flex-col items-center gap-3 transition-all duration-300 hover:scale-[1.02] hover:shadow-lg hover:shadow-yellow-500/10">
-            <div class="absolute inset-0 bg-gradient-to-br from-yellow-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
-            <Icon name="heroicons:cake" size="2em" class="text-gray-400 group-hover:text-yellow-500 transition-colors duration-300"/>
-            <span class="font-bold text-sm font-display">Food Squad</span>
+                  class="group relative h-32 bg-white/5 border border-white/10 rounded-2xl hover:bg-yellow-500/20 hover:border-yellow-500/30 transition-all duration-300 flex flex-col items-center justify-center gap-2">
+            <Icon name="heroicons:cake" class="w-8 h-8 text-gray-400 group-hover:text-yellow-500 transition-colors"/>
+            <span class="font-bold font-display text-sm">{{ t('squad.food_squad') }}</span>
           </button>
         </div>
 
         <div class="relative py-2">
-          <div class="absolute inset-0 flex items-center">
-            <div class="w-full border-t border-white/10"></div>
-          </div>
-          <div class="relative flex justify-center">
-            <span class="bg-brand-surface px-4 text-xs text-gray-500 uppercase tracking-widest font-bold">Or Join</span>
-          </div>
+          <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+          <div class="relative flex justify-center"><span class="bg-brand-surface px-4 text-xs text-gray-500 uppercase tracking-widest font-bold">{{ t('squad.or_join') }}</span></div>
         </div>
 
-        <div class="flex gap-3">
-          <input v-model="joinCode" type="text" placeholder="CODE" maxlength="4"
-                 class="w-28 bg-white/5 border border-white/10 rounded-xl p-4 text-center uppercase font-bold font-display tracking-widest focus:border-brand-red/50 focus:bg-white/10 focus:outline-none transition-all duration-300"/>
+        <div class="flex gap-2">
+          <input v-model="roomCode" type="text" :placeholder="t('squad.room_code')" maxlength="6"
+                 class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-red/50 focus:bg-white/10 transition-all text-lg font-medium uppercase tracking-widest text-center">
           <button @click="joinLobby" :disabled="loading"
-                  class="flex-1 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors duration-300 font-display tracking-wide">
-            Enter Room
+                  class="bg-white text-black font-bold px-6 rounded-xl hover:bg-gray-200 transition-colors font-display tracking-wide">
+            {{ t('squad.enter_room') }}
           </button>
         </div>
+
       </div>
 
     </div>

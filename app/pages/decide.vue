@@ -2,6 +2,7 @@
 import MovieCard from '~/components/modules/MovieCard.vue'
 import type { Movie } from '~/types/movie'
 
+const { t } = useTranslations()
 const route = useRoute()
 const mode = computed(() => (route.query.mode as string) || 'movie')
 
@@ -11,10 +12,10 @@ const data = ref<Movie | null>(null)
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-const pageTitle = computed(() => mode.value === 'movie' ? 'Find a Movie' : 'Find Food')
+const pageTitle = computed(() => mode.value === 'movie' ? t('decide.find_movie') : t('decide.find_food'))
 
 const currentVibeLabel = computed(() => {
-  const v = vibes.find(v => v.id === mood.value)
+  const v = vibes.value.find(v => v.id === mood.value)
   return v ? v.label : ''
 })
 
@@ -23,14 +24,14 @@ useHead({
 })
 
 // Define Moods (Emojis make it faster to process)
-const vibes = [
-  {id: 'chill', label: 'Chill / Lazy', icon: '😌'},
-  {id: 'lit', label: 'Energetic / Wild', icon: '🔥'},
-  {id: 'sad', label: 'In My Feelings', icon: '🥲'},
-  {id: 'romantic', label: 'Date Vibe', icon: '😍'},
-  {id: 'hungry', label: 'Starving', icon: '🤤'},
-  {id: 'curious', label: 'Surprise Me', icon: '🎲'}
-]
+const vibes = computed(() => [
+  {id: 'chill', label: t('decide.vibes.chill'), icon: '😌'},
+  {id: 'lit', label: t('decide.vibes.lit'), icon: '🔥'},
+  {id: 'sad', label: t('decide.vibes.sad'), icon: '🥲'},
+  {id: 'romantic', label: t('decide.vibes.romantic'), icon: '😍'},
+  {id: 'hungry', label: t('decide.vibes.hungry'), icon: '🤤'},
+  {id: 'curious', label: t('decide.vibes.curious'), icon: '🎲'}
+])
 
 // Step 1: Select Mood
 const selectMood = (selectedMood: string) => {
@@ -46,16 +47,22 @@ const spin = async () => {
 
   try {
     const endpoint = mode.value === 'movie' ? '/api/movies/random' : '/api/food/random'
+    const region = useState('region')
+    const locale = useState('locale')
 
     // Pass the mood as a query parameter
     const response = await $fetch(endpoint, {
-      params: {mood: mood.value}
+      params: {
+        mood: mood.value,
+        region: region.value,
+        locale: locale.value
+      }
     })
 
     data.value = response as Movie
   } catch (err) {
     console.error(err)
-    error.value = "Oops! Nothing matches that vibe. Try 'Surprise Me'."
+    error.value = t('decide.error')
   } finally {
     loading.value = false
   }
@@ -91,14 +98,14 @@ const resetVibe = () => {
         <div class="p-2 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
           <Icon name="heroicons:arrow-left" class="w-5 h-5"/>
         </div>
-        <span class="text-sm font-bold font-display tracking-wide">MENU</span>
+        <span class="text-sm font-bold font-display tracking-wide">{{ t('decide.menu') }}</span>
       </NuxtLink>
 
       <button
           v-if="mood"
           class="text-[10px] md:text-xs font-bold px-3 py-2 md:px-4 md:py-2 rounded-full border border-white/10 text-brand-red bg-brand-red/5 hover:bg-brand-red/10 uppercase tracking-wider transition-all hover:scale-105 flex items-center gap-2"
           @click="resetVibe">
-        <span class="hidden md:inline">Change Vibe</span>
+        <span class="hidden md:inline">{{ t('decide.change_vibe') }}</span>
         <span class="hidden md:inline text-white/50">•</span>
         <span class="text-white truncate max-w-[120px] md:max-w-none">{{ currentVibeLabel }}</span>
         <Icon name="heroicons:pencil-square" class="w-4 h-4 md:hidden"/>
@@ -107,8 +114,8 @@ const resetVibe = () => {
 
     <div v-if="!mood" class="w-full max-w-md animate-fade-in z-10">
       <div class="text-center mb-10 space-y-2">
-        <h1 class="text-4xl md:text-5xl font-black font-display tracking-tight">Vibe Check</h1>
-        <p class="text-gray-400 font-light text-lg">How are you feeling right now?</p>
+        <h1 class="text-4xl md:text-5xl font-black font-display tracking-tight">{{ t('decide.vibe_check') }}</h1>
+        <p class="text-gray-400 font-light text-lg">{{ t('decide.how_feeling') }}</p>
       </div>
 
       <div class="grid grid-cols-2 gap-4">
@@ -130,7 +137,7 @@ const resetVibe = () => {
         <h1 class="font-black text-3xl md:text-4xl tracking-tight font-display">{{ pageTitle }}</h1>
         <p v-if="loading" class="text-gray-400 text-sm font-medium flex items-center justify-center gap-2">
           <Icon name="svg-spinners:ring-resize" class="text-brand-red"/>
-          Matching your vibe...
+          {{ t('decide.matching') }}
         </p>
       </div>
 
@@ -138,7 +145,7 @@ const resetVibe = () => {
 v-if="error"
            class="w-full bg-red-500/10 backdrop-blur-md text-red-200 px-6 py-4 rounded-2xl text-sm border border-red-500/20 text-center shadow-lg shadow-red-900/20">
         <p class="font-medium">{{ error }}</p>
-        <button class="block w-full mt-3 font-bold text-white bg-red-500/20 py-2 rounded-lg hover:bg-red-500/30 transition-colors" @click="resetVibe">Try different vibe</button>
+        <button class="block w-full mt-3 font-bold text-white bg-red-500/20 py-2 rounded-lg hover:bg-red-500/30 transition-colors" @click="resetVibe">{{ t('decide.try_again') }}</button>
       </div>
 
       <MovieCard

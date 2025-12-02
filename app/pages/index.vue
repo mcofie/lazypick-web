@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const tagline = "Decisions made easy. What's the plan?"
+const { t } = useTranslations()
 
 useHead({
   title: 'Home'
@@ -19,7 +19,7 @@ useHead({
         <h1 class="text-6xl md:text-8xl font-black tracking-tighter font-display drop-shadow-2xl">
           Lazy<span class="text-gradient-red">Pick</span>
         </h1>
-        <p class="text-gray-400 text-xl font-light max-w-xs mx-auto leading-relaxed">{{ tagline }}</p>
+        <p class="text-gray-400 text-xl font-light max-w-xs mx-auto leading-relaxed">{{ t('home.tagline') }}</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -34,8 +34,8 @@ to="/decide?mode=movie"
             <div class="mb-6 p-4 rounded-full bg-white/5 border border-white/10 group-hover:bg-brand-red/20 group-hover:border-brand-red/30 transition-colors duration-300">
               <Icon name="heroicons:film" size="3em" class="text-gray-300 group-hover:text-brand-red transition-colors duration-300"/>
             </div>
-            <h2 class="text-3xl font-bold font-display mb-2">Watch</h2>
-            <p class="text-xs text-gray-500 font-medium tracking-wide uppercase">Netflix • Prime • Showmax</p>
+            <h2 class="text-3xl font-bold font-display mb-2">{{ t('home.watch') }}</h2>
+            <p class="text-xs text-gray-500 font-medium tracking-wide uppercase">{{ t('home.watch_desc') }}</p>
           </div>
         </NuxtLink>
 
@@ -49,8 +49,8 @@ to="/decide?mode=food"
             <div class="mb-6 p-4 rounded-full bg-white/5 border border-white/10 group-hover:bg-yellow-500/20 group-hover:border-yellow-500/30 transition-colors duration-300">
               <Icon name="heroicons:cake" size="3em" class="text-gray-300 group-hover:text-yellow-500 transition-colors duration-300"/>
             </div>
-            <h2 class="text-3xl font-bold font-display mb-2">Eat</h2>
-            <p class="text-xs text-gray-500 font-medium tracking-wide uppercase">Local • Continental • Fast</p>
+            <h2 class="text-3xl font-bold font-display mb-2">{{ t('home.eat') }}</h2>
+            <p class="text-xs text-gray-500 font-medium tracking-wide uppercase">{{ t('home.eat_desc') }}</p>
           </div>
         </NuxtLink>
 
@@ -68,21 +68,17 @@ to="/decide?mode=food"
             <Icon name="heroicons:users" size="3em" class="text-gray-300 group-hover:text-purple-400 transition-colors duration-300"/>
           </div>
           <div class="text-left">
-            <h2 class="text-3xl font-bold font-display mb-1">Squad Mode</h2>
-            <p class="text-xs text-gray-500 font-medium tracking-wide uppercase">Swipe with friends • Multiplayer</p>
+            <h2 class="text-3xl font-bold font-display mb-1">{{ t('home.squad') }}</h2>
+            <p class="text-xs text-gray-500 font-medium tracking-wide uppercase">{{ t('home.squad_desc') }}</p>
           </div>
         </div>
 
         <div class="relative z-10">
-          <span class="px-3 py-1 bg-purple-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-full animate-pulse">New</span>
+          <span class="px-3 py-1 bg-purple-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-full animate-pulse">{{ t('home.new') }}</span>
         </div>
       </NuxtLink>
 
-      <div class="text-center pt-8 opacity-60">
-        <p class="text-[10px] text-gray-500 uppercase tracking-[0.3em] font-bold">
-          Accra Edition 🇬🇭
-        </p>
-      </div>
+
 
     </div>
   </div>

@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.86.0",
+    "canvas-confetti": "^1.9.4",
     "nuxt": "^4.2.1",
     "posthog-js": "^1.299.0",
     "vue": "^3.5.25",
@@ -23,6 +24,7 @@
     "@nuxt/eslint-config": "^0.7.4",
     "@nuxt/icon": "^2.1.0",
     "@nuxtjs/tailwindcss": "^6.14.0",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/node": "^24.10.1",
     "@vite-pwa/nuxt": "^1.1.0",
     "@vueuse/nuxt": "^14.1.0",
