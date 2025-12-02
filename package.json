@@ -7,7 +7,9 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "lint": "eslint .",
+    "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
     "nuxt": "^4.2.1",
@@ -15,9 +17,15 @@
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
+    "@nuxt/eslint": "^1.11.0",
+    "@nuxt/eslint-config": "^0.7.4",
     "@nuxt/icon": "^2.1.0",
     "@nuxtjs/tailwindcss": "^6.14.0",
+    "@types/node": "^24.10.1",
     "@vite-pwa/nuxt": "^1.1.0",
-    "@vueuse/nuxt": "^14.1.0"
+    "@vueuse/nuxt": "^14.1.0",
+    "eslint": "^9.16.0",
+    "typescript": "^5.7.2",
+    "vue-tsc": "^2.1.10"
   }
 }

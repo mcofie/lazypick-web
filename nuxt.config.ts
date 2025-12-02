@@ -1,5 +1,63 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
-  devtools: { enabled: true }
+    compatibilityDate: '2024-04-03',
+    devtools: { enabled: true },
+
+    // 1. Activate Modules
+    modules: [
+        '@nuxtjs/tailwindcss',
+        '@vite-pwa/nuxt',
+        '@nuxt/icon',
+        '@vueuse/nuxt',
+        '@nuxt/eslint'
+    ],
+
+    // 2. Head Configuration (SEO & Mobile feel)
+    app: {
+        head: {
+            title: 'LazyPick',
+            meta: [
+                { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' }, // Prevents zooming on mobile
+                { name: 'description', content: 'Stop scrolling. Start watching. The decision tool for Ghana.' },
+                { name: 'theme-color', content: '#000000' }
+            ]
+        }
+    },
+
+    // 3. PWA Configuration (The "App" Magic)
+    pwa: {
+        manifest: {
+            name: 'LazyPick',
+            short_name: 'LazyPick',
+            theme_color: '#000000',
+            background_color: '#000000',
+            display: 'standalone', // Hides browser bar
+            orientation: 'portrait',
+            scope: '/',
+            start_url: '/',
+            icons: [
+                {
+                    src: 'icon-192.png',
+                    sizes: '192x192',
+                    type: 'image/png'
+                },
+                {
+                    src: 'icon-512.png',
+                    sizes: '512x512',
+                    type: 'image/png'
+                }
+            ]
+        },
+        workbox: {
+            navigateFallback: '/',
+            globPatterns: ['**/*.{js,css,html,png,svg,ico}'] // Cache these for offline use
+        },
+        devOptions: {
+            enabled: true, // Test PWA in development
+            type: 'module'
+        },
+    },
+    runtimeConfig: {
+        tmdbApiKey: process.env.TMDB_API_KEY, // Server-side only (secure)
+    }
 })
