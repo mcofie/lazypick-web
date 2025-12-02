@@ -51,7 +51,7 @@ const openMovie = (url: string) => {
         
         <img :src="movie.poster" :alt="movie.title" class="w-full h-full object-cover">
         
-        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-4">
           
           <h3 class="font-bold text-lg leading-tight mb-1">{{ movie.title }}</h3>
           <div class="flex items-center gap-2 text-xs text-gray-300 mb-4">
