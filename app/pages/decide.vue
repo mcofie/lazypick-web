@@ -12,6 +12,11 @@ const error = ref<string | null>(null)
 
 const pageTitle = computed(() => mode.value === 'movie' ? 'Find a Movie' : 'Find Food')
 
+const currentVibeLabel = computed(() => {
+  const v = vibes.find(v => v.id === mood.value)
+  return v ? v.label : ''
+})
+
 useHead({
   title: pageTitle
 })
@@ -78,9 +83,12 @@ const resetVibe = () => {
       </NuxtLink>
 
       <button
-v-if="mood" class="text-xs font-bold px-4 py-2 rounded-full border border-white/10 text-brand-red bg-brand-red/5 hover:bg-brand-red/10 uppercase tracking-wider transition-all hover:scale-105"
-              @click="resetVibe">
-        Change Vibe
+          v-if="mood"
+          class="text-xs font-bold px-4 py-2 rounded-full border border-white/10 text-brand-red bg-brand-red/5 hover:bg-brand-red/10 uppercase tracking-wider transition-all hover:scale-105 flex items-center gap-2"
+          @click="resetVibe">
+        <span>Change Vibe</span>
+        <span class="text-white/50">•</span>
+        <span class="text-white">{{ currentVibeLabel }}</span>
       </button>
     </div>
 

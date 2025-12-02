@@ -12,7 +12,7 @@ interface Movie {
 }
 
 const props = defineProps<{
-  movie: Movie;
+  movie: Movie | null;
   loading: boolean;
   mode: string;
 }>();
@@ -43,11 +43,17 @@ const cardStyle = computed(() => {
 
 // Handle Release
 const handleRelease = () => {
-  const threshold = 150
+  const threshold = 100
 
   if (x.value > threshold) {
-    if (props.movie?.netflixUrl) window.open(props.movie.netflixUrl, '_blank')
-    resetCard()
+    if (props.movie?.netflixUrl) {
+      setTimeout(() => {
+        window.open(props.movie.netflixUrl, '_blank')
+        resetCard()
+      }, 300)
+    } else {
+      resetCard()
+    }
   } else if (x.value < -threshold) {
     emit('spin')
     resetCard()
@@ -113,6 +119,23 @@ v-if="x < -50"
              class="absolute top-10 right-10 border-4 border-red-500 text-red-500 font-black text-5xl px-6 py-2 rounded-xl rotate-12 opacity-0 animate-fade-in"
              :style="{ opacity: Math.min(Math.abs(x) / 100, 1) }">
           NO
+        </div>
+      </div>
+
+      <!-- Swipe Hints -->
+      <div v-if="!isDragging && !loading && movie" class="absolute inset-0 flex items-center justify-between px-4 pointer-events-none z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <div class="flex flex-col items-center gap-2 animate-pulse">
+          <div class="w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center border border-white/10">
+            <Icon name="heroicons:x-mark" class="w-5 h-5 text-white/70"/>
+          </div>
+          <span class="text-[10px] uppercase tracking-widest text-white/50 font-bold drop-shadow-md">Pass</span>
+        </div>
+        
+        <div class="flex flex-col items-center gap-2 animate-pulse">
+          <div class="w-10 h-10 rounded-full bg-black/20 backdrop-blur-sm flex items-center justify-center border border-white/10">
+            <Icon name="heroicons:heart" class="w-5 h-5 text-white/70"/>
+          </div>
+          <span class="text-[10px] uppercase tracking-widest text-white/50 font-bold drop-shadow-md">Watch</span>
         </div>
       </div>
 
