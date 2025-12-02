@@ -128,20 +128,15 @@ const joinLobby = async () => {
         <div class="space-y-2">
           <label class="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">{{ t('squad.your_name') }}</label>
           <input v-model="name" type="text" :placeholder="t('squad.name_placeholder')" 
+                 @keyup.enter="createLobby('movie')"
                  class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-red/50 focus:bg-white/10 transition-all text-lg font-medium">
         </div>
 
-        <div class="flex flex-col md:grid md:grid-cols-2 gap-4">
+        <div>
           <button @click="createLobby('movie')" :disabled="loading"
-                  class="group relative h-24 md:h-32 bg-white/5 border border-white/10 rounded-2xl hover:bg-brand-red/20 hover:border-brand-red/30 transition-all duration-300 flex flex-row md:flex-col items-center justify-center gap-3 md:gap-2">
-            <Icon name="heroicons:film" class="w-6 h-6 md:w-8 md:h-8 text-gray-400 group-hover:text-brand-red transition-colors"/>
-            <span class="font-bold font-display text-sm">{{ t('squad.movie_squad') }}</span>
-          </button>
-
-          <button @click="createLobby('food')" :disabled="loading"
-                  class="group relative h-24 md:h-32 bg-white/5 border border-white/10 rounded-2xl hover:bg-yellow-500/20 hover:border-yellow-500/30 transition-all duration-300 flex flex-row md:flex-col items-center justify-center gap-3 md:gap-2">
-            <Icon name="heroicons:cake" class="w-6 h-6 md:w-8 md:h-8 text-gray-400 group-hover:text-yellow-500 transition-colors"/>
-            <span class="font-bold font-display text-sm">{{ t('squad.food_squad') }}</span>
+                  class="w-full py-4 bg-brand-red rounded-xl font-bold text-lg hover:bg-red-600 hover:scale-[1.02] hover:shadow-xl hover:shadow-brand-red/20 transition-all duration-300 font-display tracking-wide flex items-center justify-center gap-2">
+            <Icon name="heroicons:plus-circle" class="w-6 h-6"/>
+            <span>{{ t('squad.create_squad') }}</span>
           </button>
         </div>
 

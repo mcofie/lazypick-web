@@ -25,6 +25,9 @@ module.exports = {
                 'fade-in': 'fadeIn 0.5s ease-out',
                 'slide-up': 'slideUp 0.5s ease-out',
                 'float': 'float 6s ease-in-out infinite',
+                'float-delayed': 'float 6s ease-in-out 3s infinite',
+                'text-shimmer': 'textShimmer 3s linear infinite',
+                'shine': 'shine 1.5s infinite',
             },
             keyframes: {
                 fadeIn: {
@@ -38,6 +41,14 @@ module.exports = {
                 float: {
                     '0%, 100%': { transform: 'translateY(0)' },
                     '50%': { transform: 'translateY(-20px)' },
+                },
+                textShimmer: {
+                    '0%': { backgroundPosition: '0% 50%' },
+                    '100%': { backgroundPosition: '200% 50%' },
+                },
+                shine: {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(100%)' },
                 }
             }
         },

@@ -9,7 +9,9 @@ export const translations = {
             squad: "Squad Mode",
             squad_desc: "Swipe with friends • Multiplayer",
             new: "New",
-            start_deciding: "Start Deciding"
+            start_deciding: "Start Deciding",
+            solo: "Solo Mode",
+            solo_desc: "Decide for yourself"
         },
         decide: {
             find_movie: "Find a Movie",
@@ -52,7 +54,8 @@ export const translations = {
             load_more: "Load More Cards",
             loading: "Loading...",
             match_found: "It's a Match!",
-            open_now: "Open Now"
+            open_now: "Open Now",
+            create_squad: "Create Squad"
         },
         footer: {
             privacy: "Privacy",
@@ -75,7 +78,9 @@ export const translations = {
             squad: "Mode Squad",
             squad_desc: "Swipez entre amis • Multijoueur",
             new: "Nouveau",
-            start_deciding: "Commencer"
+            start_deciding: "Commencer",
+            solo: "Mode Solo",
+            solo_desc: "Décidez pour vous-même"
         },
         decide: {
             find_movie: "Trouver un film",
@@ -118,7 +123,8 @@ export const translations = {
             load_more: "Plus de cartes",
             loading: "Chargement...",
             match_found: "C'est un Match !",
-            open_now: "Ouvrir"
+            open_now: "Ouvrir",
+            create_squad: "Créer une Squad"
         },
         footer: {
             privacy: "Confidentialité",
@@ -141,7 +147,9 @@ export const translations = {
             squad: "Modo Squad",
             squad_desc: "Desliza con amigos • Multijugador",
             new: "Nuevo",
-            start_deciding: "Empezar"
+            start_deciding: "Empezar",
+            solo: "Modo Solitario",
+            solo_desc: "Decide por ti mismo"
         },
         decide: {
             find_movie: "Buscar Película",
@@ -184,7 +192,8 @@ export const translations = {
             load_more: "Más Cartas",
             loading: "Cargando...",
             match_found: "¡Es un Match!",
-            open_now: "Abrir Ahora"
+            open_now: "Abrir Ahora",
+            create_squad: "Crear Squad"
         },
         footer: {
             privacy: "Privacidad",
