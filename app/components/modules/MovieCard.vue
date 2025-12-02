@@ -50,6 +50,7 @@ const handleRelease = () => {
     resetCard()
   } else if (x.value < -threshold) {
     emit('spin')
+    resetCard()
   } else {
     resetCard()
   }
