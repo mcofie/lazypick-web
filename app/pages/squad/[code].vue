@@ -29,22 +29,32 @@ onMounted(async () => {
   if (!currentUserId.value) return navigateTo('/squad')
 
   // 1. Initial Fetch (Using explicit schema)
-  const {data: lobbyData} = await client.schema('lazypick').from('lobbies').select().eq('code', code).single()
+  const {data: lobbyData, error: lobbyError} = await client.schema('lazypick').from('lobbies').select().eq('code', code).single()
+  
+  if (lobbyError || !lobbyData) {
+    console.error('Lobby Error:', lobbyError)
+    alert('Lobby not found or error loading')
+    return navigateTo('/squad')
+  }
+
   lobby.value = lobbyData
   status.value = lobbyData.status
   if (lobbyData.status === 'matched') matchResult.value = lobbyData.result_json
 
-  const {data: parts} = await client.schema('lazypick').from('participants').select().eq('lobby_code', code)
+  const {data: parts, error: partsError} = await client.schema('lazypick').from('participants').select().eq('lobby_code', code)
+  if (partsError) console.error('Participants Error:', partsError)
+  console.log('Initial Participants:', parts)
   participants.value = parts || []
 
   // 2. Realtime Subscription (Specifying Schema)
-  client.channel(`lobby_${code}`)
+  const channel = client.channel(`lobby_${code}`)
       .on('postgres_changes', {
         event: 'INSERT',
         schema: 'lazypick', // <--- IMPORTANT
         table: 'participants',
         filter: `lobby_code=eq.${code}`
       }, (payload: any) => {
+        console.log('New Participant Event:', payload)
         participants.value.push(payload.new)
       })
       .on('postgres_changes', {
@@ -53,6 +63,7 @@ onMounted(async () => {
         table: 'lobbies',
         filter: `code=eq.${code}`
       }, (payload: any) => {
+        console.log('Lobby Update Event:', payload)
         if (payload.new.status === 'active' && status.value === 'waiting') startGame()
         if (payload.new.status === 'matched') {
           status.value = 'matched'
@@ -61,7 +72,9 @@ onMounted(async () => {
           fireConfetti()
         }
       })
-      .subscribe()
+      .subscribe((status) => {
+        console.log('Subscription Status:', status)
+      })
 })
 
 const triggerStart = async () => {
@@ -178,9 +191,9 @@ const fireConfetti = () => {
         <h3 class="font-bold text-gray-400 text-xs uppercase tracking-widest">{{ t('squad.members') }}</h3>
         <div class="flex flex-wrap justify-center gap-3">
           <span v-for="p in participants" :key="p.id"
-                class="px-5 py-2.5 bg-white/10 border border-white/5 rounded-full text-sm font-bold animate-pulse flex items-center gap-2">
-            <div class="w-2 h-2 rounded-full bg-green-500"></div>
-            {{ p.name }}
+                class="px-5 py-2.5 bg-white/10 border border-white/5 rounded-full text-sm font-bold flex items-center gap-2 transition-all hover:bg-white/20">
+            <div class="w-2 h-2 rounded-full" :class="p.id === currentUserId ? 'bg-brand-red' : 'bg-green-500'"></div>
+            {{ p.name }} <span v-if="p.id === currentUserId" class="opacity-50 font-normal">(You)</span>
           </span>
           <span v-if="participants.length === 0" class="text-gray-600 text-sm italic">{{ t('squad.waiting_players') }}</span>
         </div>

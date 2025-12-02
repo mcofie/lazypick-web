@@ -46,12 +46,18 @@ const createLobby = async (mode: 'movie' | 'food') => {
   const userId = crypto.randomUUID()
   localStorage.setItem(`squad_user_${code}`, userId)
 
-  await client.schema('lazypick').from('participants').insert({
+  const { error: partError } = await client.schema('lazypick').from('participants').insert({
     lobby_code: code,
     name: name.value,
-    id: userId,
-    is_host: true
+    id: userId
   })
+
+  if (partError) {
+    console.error('Participant Insert Error:', partError)
+    alert('Failed to join lobby as host')
+    loading.value = false
+    return
+  }
 
   router.push(`/squad/${code}`)
 }
@@ -76,12 +82,18 @@ const joinLobby = async () => {
   const userId = crypto.randomUUID()
   localStorage.setItem(`squad_user_${code}`, userId)
 
-  await client.schema('lazypick').from('participants').insert({
+  const { error: joinError } = await client.schema('lazypick').from('participants').insert({
     lobby_code: code,
     name: name.value,
-    id: userId,
-    is_host: false
+    id: userId
   })
+
+  if (joinError) {
+    console.error('Join Error:', joinError)
+    alert('Failed to join lobby')
+    loading.value = false
+    return
+  }
 
   router.push(`/squad/${code}`)
 }
