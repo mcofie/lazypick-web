@@ -12,6 +12,7 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.86.0",
     "nuxt": "^4.2.1",
     "posthog-js": "^1.299.0",
     "vue": "^3.5.25",

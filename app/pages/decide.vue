@@ -52,12 +52,23 @@ const spin = async () => {
       params: {mood: mood.value}
     })
 
-    data.value = response
+    data.value = response as Movie
   } catch (err) {
     console.error(err)
     error.value = "Oops! Nothing matches that vibe. Try 'Surprise Me'."
   } finally {
     loading.value = false
+  }
+}
+
+// Handle Card Choice
+const handleChoice = (liked: boolean) => {
+  if (liked && data.value?.netflixUrl) {
+    window.open(data.value.netflixUrl, '_blank')
+    // Optionally fetch next card after returning? For now just keep current or reset.
+    // spin() // Uncomment if we want auto-next after like
+  } else {
+    spin()
   }
 }
 
@@ -135,7 +146,7 @@ v-if="error"
           :movie="data"
           :loading="loading"
           :mode="mode"
-          @spin="spin"
+          @choice="handleChoice"
       />
 
     </div>

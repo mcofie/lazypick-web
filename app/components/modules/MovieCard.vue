@@ -6,9 +6,10 @@ const props = defineProps<{
   movie: Movie | null;
   loading: boolean;
   mode: string;
+  hideActions?: boolean;
 }>();
 
-const emit = defineEmits(['spin']);
+const emit = defineEmits(['choice']);
 
 // Card Reference
 const card = ref<HTMLElement | null>(null)
@@ -37,15 +38,10 @@ const handleRelease = () => {
   const threshold = 100
 
   if (x.value > threshold) {
-    if (props.movie?.netflixUrl) {
-      // Open immediately to avoid mobile popup blockers
-      window.open(props.movie.netflixUrl, '_blank')
-      resetCard()
-    } else {
-      resetCard()
-    }
+    emit('choice', true) // Like
+    resetCard()
   } else if (x.value < -threshold) {
-    emit('spin')
+    emit('choice', false) // Pass
     resetCard()
   } else {
     resetCard()
@@ -139,19 +135,20 @@ v-if="!loading"
 v-if="!loading"
          class="absolute w-[85%] h-full bg-white/5 rounded-[2rem] -z-20 scale-90 translate-y-8 blur-md border border-white/5"/>
 
-    <div class="absolute -bottom-24 left-0 w-full flex justify-center gap-8 px-6 z-10">
+    <div v-if="!hideActions" class="absolute -bottom-24 left-0 w-full flex justify-center gap-8 px-6 z-10">
 
       <button
 :disabled="loading" class="h-16 w-16 rounded-full glass flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-all duration-300 active:scale-90 shadow-2xl hover:shadow-red-500/30 group"
-              @click="$emit('spin')">
+              @click="$emit('choice', false)">
         <Icon name="heroicons:x-mark" size="2em" class="group-hover:rotate-90 transition-transform duration-300"/>
       </button>
 
-      <a
-v-if="movie" :href="movie.netflixUrl" target="_blank"
-         class="h-16 w-16 rounded-full bg-white flex items-center justify-center text-brand-dark hover:scale-110 transition-all duration-300 active:scale-90 shadow-2xl hover:shadow-white/20">
+      <button
+v-if="movie"
+         class="h-16 w-16 rounded-full bg-white flex items-center justify-center text-brand-dark hover:scale-110 transition-all duration-300 active:scale-90 shadow-2xl hover:shadow-white/20"
+         @click="$emit('choice', true)">
         <Icon name="heroicons:heart-solid" size="2em" class="text-brand-red animate-pulse"/>
-      </a>
+      </button>
 
     </div>
 

@@ -56,6 +56,28 @@ to="/decide?mode=food"
 
       </div>
 
+      <!-- Squad Mode -->
+      <NuxtLink
+          to="/squad"
+          class="group relative w-full glass rounded-[2rem] overflow-hidden flex items-center justify-between p-8 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-500/20">
+
+        <div class="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
+
+        <div class="relative z-10 flex items-center gap-6">
+          <div class="p-4 rounded-full bg-white/5 border border-white/10 group-hover:bg-purple-500/20 group-hover:border-purple-500/30 transition-colors duration-300">
+            <Icon name="heroicons:users" size="3em" class="text-gray-300 group-hover:text-purple-400 transition-colors duration-300"/>
+          </div>
+          <div class="text-left">
+            <h2 class="text-3xl font-bold font-display mb-1">Squad Mode</h2>
+            <p class="text-xs text-gray-500 font-medium tracking-wide uppercase">Swipe with friends • Multiplayer</p>
+          </div>
+        </div>
+
+        <div class="relative z-10">
+          <span class="px-3 py-1 bg-purple-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-full animate-pulse">New</span>
+        </div>
+      </NuxtLink>
+
       <div class="text-center pt-8 opacity-60">
         <p class="text-[10px] text-gray-500 uppercase tracking-[0.3em] font-bold">
           Accra Edition 🇬🇭

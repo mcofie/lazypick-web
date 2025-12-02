@@ -1,8 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    compatibilityDate: '2024-04-03',
-    devtools: { enabled: true },
-
     // 1. Activate Modules
     modules: [
         '@nuxtjs/tailwindcss',
@@ -11,7 +8,6 @@ export default defineNuxtConfig({
         '@vueuse/nuxt',
         '@nuxt/eslint'
     ],
-
     css: ['~/assets/css/main.css'],
 
     // 2. Head Configuration (SEO & Mobile feel)
@@ -38,7 +34,10 @@ export default defineNuxtConfig({
             link: [
                 { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
                 { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-                { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&display=swap' }
+                {
+                    rel: 'stylesheet',
+                    href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;700;900&display=swap'
+                }
             ]
         }
     },
@@ -81,7 +80,11 @@ export default defineNuxtConfig({
         public: {
             posthogPublicKey: 'phc_is230XlvYV94NtCaEofDBRdKjMypkmAi1xi1Cu7gcQ',
             posthogHost: 'https://us.i.posthog.com',
-            posthogDefaults: '2025-11-30'
+            posthogDefaults: '2025-11-30',
+            supabase: {
+                url: process.env.SUPABASE_URL || '',
+                key: process.env.SUPABASE_KEY || ''
+            }
         }
     },
     experimental: {
