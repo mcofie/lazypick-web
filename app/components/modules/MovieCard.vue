@@ -48,9 +48,50 @@ const handleRelease = () => {
   }
 }
 
+
+
 const resetCard = () => {
   x.value = 0
   y.value = 0
+}
+
+// Watchlist Logic
+const isSaved = ref(false)
+
+onMounted(() => {
+  checkIfSaved()
+})
+
+watch(() => props.movie, () => {
+  checkIfSaved()
+})
+
+const checkIfSaved = () => {
+  if (!props.movie) return
+  const saved = localStorage.getItem('lazypick_watchlist')
+  if (saved) {
+    const list = JSON.parse(saved)
+    isSaved.value = list.some((m: any) => m.id === props.movie?.id)
+  } else {
+    isSaved.value = false
+  }
+}
+
+const toggleSave = () => {
+  if (!props.movie) return
+  
+  const saved = localStorage.getItem('lazypick_watchlist')
+  let list = saved ? JSON.parse(saved) : []
+
+  if (isSaved.value) {
+    list = list.filter((m: any) => m.id !== props.movie?.id)
+    isSaved.value = false
+  } else {
+    list.push(props.movie)
+    isSaved.value = true
+  }
+
+  localStorage.setItem('lazypick_watchlist', JSON.stringify(list))
 }
 </script>
 
@@ -147,13 +188,23 @@ v-if="!loading"
       </button>
 
       <button
-v-if="movie"
-         class="h-16 w-16 rounded-full bg-white flex items-center justify-center text-brand-dark hover:scale-110 transition-all duration-300 active:scale-90 shadow-2xl hover:shadow-white/20"
-         @click="$emit('choice', true)">
+          v-if="movie"
+          class="h-16 w-16 rounded-full bg-white flex items-center justify-center text-brand-dark hover:scale-110 transition-all duration-300 active:scale-90 shadow-2xl hover:shadow-white/20"
+          @click="$emit('choice', true)">
         <Icon name="heroicons:heart-solid" size="2em" class="text-brand-red animate-pulse"/>
       </button>
 
     </div>
+
+    <!-- Bookmark Button (Absolute Top Right) -->
+    <button 
+      v-if="movie && !loading"
+      @click.stop="toggleSave"
+      class="absolute top-6 right-6 z-40 w-12 h-12 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center transition-all duration-300 hover:bg-black/60 active:scale-90 group"
+      :class="isSaved ? 'text-brand-red' : 'text-white/60 hover:text-white'"
+    >
+      <Icon :name="isSaved ? 'heroicons:bookmark-solid' : 'heroicons:bookmark'" class="w-6 h-6 transition-transform group-hover:scale-110"/>
+    </button>
 
   </div>
 </template>

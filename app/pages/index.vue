@@ -2,6 +2,13 @@
 const { t } = useTranslations()
 
 useHead({
+  title: 'LazyPick - Decide What to Watch or Eat',
+  meta: [
+    { name: 'description', content: "Can't decide? Let LazyPick help you find the perfect movie or food spot in seconds." }
+  ]
+})
+
+useHead({
   title: 'Home'
 })
 </script>
@@ -13,7 +20,15 @@ useHead({
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-brand-red/20 blur-[120px] rounded-full pointer-events-none animate-pulse"/>
     <div class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-blue-900/10 blur-[100px] rounded-full pointer-events-none animate-float"/>
 
-    <div class="z-10 w-full max-w-lg space-y-12 animate-fade-in">
+    <!-- Navigation -->
+    <div class="absolute top-6 right-6 z-50">
+      <NuxtLink to="/watchlist" class="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/5 transition-all text-sm font-bold tracking-wide group">
+        <span>{{ t('watchlist.title') || 'My List' }}</span>
+        <Icon name="heroicons:bookmark" class="w-4 h-4 text-gray-400 group-hover:text-white transition-colors"/>
+      </NuxtLink>
+    </div>
+
+    <div class="z-10 w-full max-w-4xl flex flex-col items-center gap-12 animate-fade-in">
 
       <div class="text-center space-y-4">
         <h1 class="text-6xl md:text-8xl font-black tracking-tighter font-display drop-shadow-2xl">

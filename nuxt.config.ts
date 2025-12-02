@@ -1,12 +1,12 @@
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     // 1. Activate Modules
     modules: [
         '@nuxtjs/tailwindcss',
-        '@vite-pwa/nuxt',
         '@nuxt/icon',
         '@vueuse/nuxt',
-        '@nuxt/eslint'
+        '@vite-pwa/nuxt'
     ],
     css: ['~/assets/css/main.css'],
 

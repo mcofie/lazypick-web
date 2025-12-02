@@ -3,6 +3,13 @@ import MovieCard from '~/components/modules/MovieCard.vue'
 import type { Movie } from '~/types/movie'
 
 const { t } = useTranslations()
+
+useHead({
+  title: 'LazyPick - Find Your Vibe',
+  meta: [
+    { name: 'description', content: 'Choose your mood and get instant recommendations.' }
+  ]
+})
 const route = useRoute()
 const mode = computed(() => (route.query.mode as string) || 'movie')
 

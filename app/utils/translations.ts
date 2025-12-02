@@ -8,7 +8,8 @@ export const translations = {
             eat_desc: "Local • Continental • Fast",
             squad: "Squad Mode",
             squad_desc: "Swipe with friends • Multiplayer",
-            new: "New"
+            new: "New",
+            start_deciding: "Start Deciding"
         },
         decide: {
             find_movie: "Find a Movie",
@@ -56,6 +57,12 @@ export const translations = {
         footer: {
             privacy: "Privacy",
             terms: "Terms"
+        },
+        watchlist: {
+            title: "My Watchlist",
+            empty_title: "Your list is empty",
+            empty_subtitle: "Start swiping to find movies you want to watch later.",
+            watch_now: "Watch Now"
         }
     },
     fr: {
@@ -67,7 +74,8 @@ export const translations = {
             eat_desc: "Local • Continental • Rapide",
             squad: "Mode Squad",
             squad_desc: "Swipez entre amis • Multijoueur",
-            new: "Nouveau"
+            new: "Nouveau",
+            start_deciding: "Commencer"
         },
         decide: {
             find_movie: "Trouver un film",
@@ -115,6 +123,12 @@ export const translations = {
         footer: {
             privacy: "Confidentialité",
             terms: "Conditions"
+        },
+        watchlist: {
+            title: "Ma Liste",
+            empty_title: "Votre liste est vide",
+            empty_subtitle: "Commencez à swiper pour trouver des films à regarder plus tard.",
+            watch_now: "Regarder"
         }
     },
     es: {
@@ -126,7 +140,8 @@ export const translations = {
             eat_desc: "Local • Continental • Rápido",
             squad: "Modo Squad",
             squad_desc: "Desliza con amigos • Multijugador",
-            new: "Nuevo"
+            new: "Nuevo",
+            start_deciding: "Empezar"
         },
         decide: {
             find_movie: "Buscar Película",
@@ -174,6 +189,12 @@ export const translations = {
         footer: {
             privacy: "Privacidad",
             terms: "Términos"
+        },
+        watchlist: {
+            title: "Mi Lista",
+            empty_title: "Tu lista está vacía",
+            empty_subtitle: "Empieza a deslizar para encontrar películas para ver más tarde.",
+            watch_now: "Ver Ahora"
         }
     }
 }

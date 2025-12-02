@@ -3,6 +3,13 @@ const client = useSupabaseClient()
 const router = useRouter()
 const { t } = useTranslations()
 
+useHead({
+  title: 'LazyPick Squad - Decide Together',
+  meta: [
+    { name: 'description', content: 'Sync up with friends and swipe to decide on a movie or food spot together.' }
+  ]
+})
+
 const name = ref('')
 const roomCode = ref('')
 const loading = ref(false)

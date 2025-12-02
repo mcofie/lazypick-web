@@ -1,3 +1,8 @@
+export interface Provider {
+    logo: string;
+    name: string;
+}
+
 export interface Movie {
     id?: number | string;
     title: string;
@@ -6,5 +11,7 @@ export interface Movie {
     year: string;
     description?: string;
     overview?: string;
-    netflixUrl: string;
+    netflixUrl?: string; // Deprecated in favor of watchUrl
+    watchUrl?: string;
+    provider?: Provider;
 }
