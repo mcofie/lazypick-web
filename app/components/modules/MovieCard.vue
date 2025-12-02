@@ -1,15 +1,6 @@
 <script setup lang="ts">
 import {useDraggable} from '@vueuse/core'
-
-interface Movie {
-  title: string;
-  poster: string;
-  rating: number;
-  year: string;
-  description?: string;
-  overview?: string;
-  netflixUrl: string;
-}
+import type { Movie } from '~/types/movie'
 
 const props = defineProps<{
   movie: Movie | null;
@@ -47,10 +38,9 @@ const handleRelease = () => {
 
   if (x.value > threshold) {
     if (props.movie?.netflixUrl) {
-      setTimeout(() => {
-        window.open(props.movie.netflixUrl, '_blank')
-        resetCard()
-      }, 300)
+      // Open immediately to avoid mobile popup blockers
+      window.open(props.movie.netflixUrl, '_blank')
+      resetCard()
     } else {
       resetCard()
     }

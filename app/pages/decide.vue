@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import MovieCard from '~/components/modules/MovieCard.vue'
+import type { Movie } from '~/types/movie'
 
 const route = useRoute()
 const mode = computed(() => (route.query.mode as string) || 'movie')
 
 // State
 const mood = ref<string | null>(null) // New state for mood
-const data = ref(null)
+const data = ref<Movie | null>(null)
 const loading = ref(false)
 const error = ref<string | null>(null)
 
@@ -84,11 +85,12 @@ const resetVibe = () => {
 
       <button
           v-if="mood"
-          class="text-xs font-bold px-4 py-2 rounded-full border border-white/10 text-brand-red bg-brand-red/5 hover:bg-brand-red/10 uppercase tracking-wider transition-all hover:scale-105 flex items-center gap-2"
+          class="text-[10px] md:text-xs font-bold px-3 py-2 md:px-4 md:py-2 rounded-full border border-white/10 text-brand-red bg-brand-red/5 hover:bg-brand-red/10 uppercase tracking-wider transition-all hover:scale-105 flex items-center gap-2"
           @click="resetVibe">
-        <span>Change Vibe</span>
-        <span class="text-white/50">•</span>
-        <span class="text-white">{{ currentVibeLabel }}</span>
+        <span class="hidden md:inline">Change Vibe</span>
+        <span class="hidden md:inline text-white/50">•</span>
+        <span class="text-white truncate max-w-[120px] md:max-w-none">{{ currentVibeLabel }}</span>
+        <Icon name="heroicons:pencil-square" class="w-4 h-4 md:hidden"/>
       </button>
     </div>
 
