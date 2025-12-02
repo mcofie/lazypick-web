@@ -36,26 +36,26 @@ useHead({
       </NuxtLink>
     </div>
 
-    <div class="z-10 w-full max-w-4xl flex flex-col items-center gap-8 md:gap-12 animate-fade-in py-12 md:py-0">
+    <div class="z-10 w-full max-w-4xl flex flex-col items-center gap-12 animate-fade-in py-12 md:py-0">
 
-      <div class="text-center space-y-4">
-        <h1 class="text-5xl md:text-8xl font-black tracking-tighter font-display drop-shadow-2xl">
+      <div class="text-center space-y-6">
+        <h1 class="text-6xl md:text-9xl font-black tracking-tighter font-display drop-shadow-2xl">
           Lazy<span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-red via-red-400 to-brand-red bg-[length:200%_auto] animate-text-shimmer">Pick</span>
         </h1>
-        <p class="text-gray-400 text-lg md:text-xl font-light max-w-xs mx-auto leading-relaxed">{{ t('home.tagline') }}</p>
+        <p class="text-gray-400 text-lg md:text-xl font-light max-w-sm mx-auto leading-relaxed tracking-wide">{{ t('home.tagline') }}</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 w-full">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
 
         <!-- Solo Mode -->
         <NuxtLink
             to="/decide?mode=movie"
-            class="group relative h-64 md:h-80 glass rounded-[2.5rem] overflow-hidden flex flex-col items-center justify-center text-center p-6 md:p-8 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-brand-red/20 border border-white/5 hover:border-white/20">
+            class="group relative h-64 md:h-80 glass rounded-[2.5rem] overflow-hidden flex flex-col items-center justify-center text-center p-8 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-brand-red/20 border border-white/10 hover:border-brand-red/30 backdrop-blur-2xl">
           
           <!-- Hover Shine -->
-          <div class="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/5 to-transparent z-20 pointer-events-none"/>
+          <div class="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent z-20 pointer-events-none"/>
           
-          <div class="absolute inset-0 bg-gradient-to-br from-brand-red/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
+          <div class="absolute inset-0 bg-gradient-to-br from-brand-red/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
           
           <div class="relative z-10 transform transition-transform duration-500 group-hover:-translate-y-2">
             <div class="mb-6 p-5 rounded-full bg-white/5 border border-white/10 group-hover:bg-brand-red/20 group-hover:border-brand-red/30 transition-colors duration-300 inline-block backdrop-blur-sm">
@@ -69,12 +69,12 @@ useHead({
         <!-- Squad Mode -->
         <NuxtLink
             to="/squad"
-            class="group relative h-64 md:h-80 glass rounded-[2.5rem] overflow-hidden flex flex-col items-center justify-center text-center p-6 md:p-8 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-500/20 border border-white/5 hover:border-white/20">
+            class="group relative h-64 md:h-80 glass rounded-[2.5rem] overflow-hidden flex flex-col items-center justify-center text-center p-8 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-500/20 border border-white/10 hover:border-purple-500/30 backdrop-blur-2xl">
           
           <!-- Hover Shine -->
-          <div class="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/5 to-transparent z-20 pointer-events-none"/>
+          <div class="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent z-20 pointer-events-none"/>
 
-          <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
+          <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
           
           <div class="relative z-10 transform transition-transform duration-500 group-hover:-translate-y-2">
             <div class="mb-6 p-5 rounded-full bg-white/5 border border-white/10 group-hover:bg-purple-500/20 group-hover:border-purple-500/30 transition-colors duration-300 inline-block backdrop-blur-sm">

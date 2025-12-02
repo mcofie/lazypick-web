@@ -6,12 +6,12 @@ export const translations = {
             watch_desc: "Netflix • Prime • Showmax",
             eat: "Eat",
             eat_desc: "Local • Continental • Fast",
-            squad: "Squad Mode",
-            squad_desc: "Swipe with friends • Multiplayer",
+            squad: "Match with Friends",
+            squad_desc: "Create a room and decide together",
             new: "New",
             start_deciding: "Start Deciding",
-            solo: "Solo Mode",
-            solo_desc: "Decide for yourself"
+            solo: "Find a Movie",
+            solo_desc: "Swipe solo to discover your next favorite"
         },
         decide: {
             find_movie: "Find a Movie",
@@ -75,12 +75,12 @@ export const translations = {
             watch_desc: "Netflix • Prime • Showmax",
             eat: "Manger",
             eat_desc: "Local • Continental • Rapide",
-            squad: "Mode Squad",
-            squad_desc: "Swipez entre amis • Multijoueur",
+            squad: "Match entre Amis",
+            squad_desc: "Créez une salle et décidez ensemble",
             new: "Nouveau",
             start_deciding: "Commencer",
-            solo: "Mode Solo",
-            solo_desc: "Décidez pour vous-même"
+            solo: "Trouver un Film",
+            solo_desc: "Swipez en solo pour découvrir votre prochain coup de cœur"
         },
         decide: {
             find_movie: "Trouver un film",
@@ -144,12 +144,12 @@ export const translations = {
             watch_desc: "Netflix • Prime • Showmax",
             eat: "Comer",
             eat_desc: "Local • Continental • Rápido",
-            squad: "Modo Squad",
-            squad_desc: "Desliza con amigos • Multijugador",
+            squad: "Match con Amigos",
+            squad_desc: "Crea una sala y decidid juntos",
             new: "Nuevo",
             start_deciding: "Empezar",
-            solo: "Modo Solitario",
-            solo_desc: "Decide por ti mismo"
+            solo: "Buscar Película",
+            solo_desc: "Desliza solo para descubrir tu próxima favorita"
         },
         decide: {
             find_movie: "Buscar Película",
