@@ -17,11 +17,23 @@ export default defineNuxtConfig({
     // 2. Head Configuration (SEO & Mobile feel)
     app: {
         head: {
+            titleTemplate: '%s - LazyPick',
             title: 'LazyPick',
             meta: [
-                { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' }, // Prevents zooming on mobile
+                { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' },
                 { name: 'description', content: 'Stop scrolling. Start watching. The decision tool for Ghana.' },
-                { name: 'theme-color', content: '#000000' }
+                { name: 'theme-color', content: '#050505' },
+                // Open Graph
+                { property: 'og:title', content: 'LazyPick - Decisions made easy' },
+                { property: 'og:description', content: 'Stop scrolling. Start watching. The decision tool for Ghana.' },
+                { property: 'og:type', content: 'website' },
+                { property: 'og:url', content: 'https://lazypick.vercel.app' }, // Assuming URL or placeholder
+                { property: 'og:image', content: 'https://lazypick.vercel.app/og-image.png' }, // Placeholder
+                // Twitter
+                { name: 'twitter:card', content: 'summary_large_image' },
+                { name: 'twitter:title', content: 'LazyPick - Decisions made easy' },
+                { name: 'twitter:description', content: 'Stop scrolling. Start watching. The decision tool for Ghana.' },
+                { name: 'twitter:image', content: 'https://lazypick.vercel.app/og-image.png' }
             ],
             link: [
                 { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -66,5 +78,11 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         tmdbApiKey: process.env.TMDB_API_KEY, // Server-side only (secure)
+    },
+    experimental: {
+        payloadExtraction: true
+    },
+    nitro: {
+        compressPublicAssets: true
     }
 })

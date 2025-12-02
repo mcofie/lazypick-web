@@ -1,5 +1,9 @@
 <script setup lang="ts">
 const tagline = "Decisions made easy. What's the plan?"
+
+useHead({
+  title: 'Home'
+})
 </script>
 
 <template>

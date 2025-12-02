@@ -12,6 +12,10 @@ const error = ref<string | null>(null)
 
 const pageTitle = computed(() => mode.value === 'movie' ? 'Find a Movie' : 'Find Food')
 
+useHead({
+  title: pageTitle
+})
+
 // Define Moods (Emojis make it faster to process)
 const vibes = [
   {id: 'chill', label: 'Chill / Lazy', icon: '😌'},
