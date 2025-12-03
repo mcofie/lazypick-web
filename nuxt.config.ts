@@ -9,6 +9,11 @@ export default defineNuxtConfig({
         '@vite-pwa/nuxt'
     ],
     css: ['~/assets/css/main.css'],
+    vite: {
+        ssr: {
+            noExternal: ['@supabase/supabase-js']
+        }
+    },
 
     // 2. Head Configuration (SEO & Mobile feel)
     app: {
