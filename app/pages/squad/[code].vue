@@ -6,6 +6,7 @@ import confetti from 'canvas-confetti'
 const route = useRoute()
 const client = useSupabaseClient()
 const { t } = useTranslations()
+const dialog = useDialog()
 const code = route.params.code as string
 
 // Clipboard
@@ -33,8 +34,11 @@ onMounted(async () => {
   
   if (lobbyError || !lobbyData) {
     console.error('Lobby Error:', lobbyError)
-    alert('Lobby not found or error loading')
+  if (lobbyError || !lobbyData) {
+    console.error('Lobby Error:', lobbyError)
+    await dialog.alert('Lobby not found or error loading', 'Error')
     return navigateTo('/squad')
+  }
   }
 
   lobby.value = lobbyData
@@ -72,7 +76,7 @@ onMounted(async () => {
           fireConfetti()
         }
       })
-      .subscribe((status) => {
+      .subscribe((status: any) => {
         console.log('Subscription Status:', status)
       })
 })

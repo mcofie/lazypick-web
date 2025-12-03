@@ -2,6 +2,7 @@
 const client = useSupabaseClient()
 const router = useRouter()
 const { t } = useTranslations()
+const dialog = useDialog()
 
 useHead({
   title: 'LazyPick Squad - Decide Together',
@@ -19,7 +20,7 @@ onMounted(() => {
 })
 
 const createLobby = async (mode: 'movie' | 'food') => {
-  if (!name.value) return alert('Please enter your name')
+  if (!name.value) return dialog.alert('Please enter your name', 'Missing Name')
   loading.value = true
 
   // Save name
@@ -37,7 +38,9 @@ const createLobby = async (mode: 'movie' | 'food') => {
 
   if (error) {
     console.error(error)
-    alert('Failed to create lobby')
+    console.error(error)
+    dialog.alert('Failed to create lobby', 'Error')
+    loading.value = false
     loading.value = false
     return
   }
@@ -54,7 +57,9 @@ const createLobby = async (mode: 'movie' | 'food') => {
 
   if (partError) {
     console.error('Participant Insert Error:', partError)
-    alert('Failed to join lobby as host')
+    console.error('Participant Insert Error:', partError)
+    dialog.alert('Failed to join lobby as host', 'Error')
+    loading.value = false
     loading.value = false
     return
   }
@@ -63,7 +68,7 @@ const createLobby = async (mode: 'movie' | 'food') => {
 }
 
 const joinLobby = async () => {
-  if (!name.value || !roomCode.value) return alert('Enter name and code')
+  if (!name.value || !roomCode.value) return dialog.alert('Enter name and code', 'Missing Info')
   loading.value = true
 
   const code = roomCode.value.toUpperCase()
@@ -73,7 +78,11 @@ const joinLobby = async () => {
   const { data: lobby } = await client.schema('lazypick').from('lobbies').select().eq('code', code).single()
   
   if (!lobby) {
-    alert('Room not found')
+  if (!lobby) {
+    dialog.alert('Room not found', 'Error')
+    loading.value = false
+    return
+  }
     loading.value = false
     return
   }
@@ -90,7 +99,9 @@ const joinLobby = async () => {
 
   if (joinError) {
     console.error('Join Error:', joinError)
-    alert('Failed to join lobby')
+    console.error('Join Error:', joinError)
+    dialog.alert('Failed to join lobby', 'Error')
+    loading.value = false
     loading.value = false
     return
   }

@@ -78,7 +78,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         tmdbApiKey: process.env.TMDB_API_KEY, // Server-side only (secure)
         public: {
-            posthogPublicKey: 'phc_is230XlvYV94NtCaEofDBRdKjMypkmAi1xi1Cu7gcQ',
+            posthogPublicKey: 'phc_avqcCjLiEY3ZRFLguGI80JVmPxJOu0pN7bWVO1m96Mm',
             posthogHost: 'https://us.i.posthog.com',
             posthogDefaults: '2025-11-30',
             supabase: {
