@@ -58,7 +58,7 @@ const route = useRoute()
 const showProviders = computed(() => {
   // Show providers if no mode is selected (e.g. home) or if mode is 'movie'
   // Hide for 'music', 'squad', etc.
-  return !route.query.mode || route.query.mode === 'movie'
+  return route.query.mode === 'movie'
 })
 </script>
 
