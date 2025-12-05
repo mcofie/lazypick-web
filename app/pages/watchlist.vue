@@ -61,10 +61,11 @@ const openMovie = (url: string) => {
           </div>
 
           <div class="flex gap-2">
-            <button @click="openMovie(movie.watchUrl || movie.netflixUrl)" class="flex-1 bg-white text-black py-2 rounded-lg font-bold text-sm hover:bg-gray-200 transition-colors">
-              {{ t('watchlist.watch_now') }}
+            <button class="flex-1 bg-white text-black py-2 rounded-lg font-bold text-sm hover:bg-gray-200 transition-colors flex items-center justify-center gap-2" @click="openMovie(movie.watchUrl || movie.netflixUrl || '')">
+              <Icon :name="movie.provider?.name === 'Spotify' ? 'heroicons:play-solid' : 'heroicons:play'" class="w-4 h-4"/>
+              {{ movie.provider?.name === 'Spotify' ? 'Listen' : t('watchlist.watch_now') }}
             </button>
-            <button @click="removeFromWatchlist(movie.id!)" class="p-2 bg-white/10 rounded-lg hover:bg-red-500/20 hover:text-red-500 transition-colors">
+            <button class="p-2 bg-white/10 rounded-lg hover:bg-red-500/20 hover:text-red-500 transition-colors" @click="removeFromWatchlist(movie.id!)">
               <Icon name="heroicons:trash" class="w-5 h-5"/>
             </button>
           </div>
@@ -73,7 +74,8 @@ const openMovie = (url: string) => {
 
         <!-- Provider Badge (Top Right) -->
         <div v-if="movie.provider" class="absolute top-3 right-3 bg-black/60 backdrop-blur-md p-1.5 rounded-full border border-white/10 shadow-lg">
-          <img :src="movie.provider.logo" class="w-5 h-5 rounded-full" :alt="movie.provider.name">
+          <img v-if="movie.provider.logo && !movie.provider.logo.includes('spotify')" :src="movie.provider.logo" class="w-5 h-5 rounded-full" :alt="movie.provider.name">
+          <Icon v-else-if="movie.provider.name === 'Spotify'" name="mdi:spotify" class="w-5 h-5 text-green-500"/>
         </div>
 
       </div>
@@ -85,8 +87,8 @@ const openMovie = (url: string) => {
         <Icon name="heroicons:bookmark" class="w-10 h-10 text-gray-600"/>
       </div>
       <h2 class="text-2xl font-bold font-display mb-2">{{ t('watchlist.empty_title') || 'Your list is empty' }}</h2>
-      <p class="text-gray-400 mb-8 max-w-md">{{ t('watchlist.empty_subtitle') || 'Start swiping to find movies you want to watch later.' }}</p>
-      <NuxtLink to="/decide" class="bg-brand-red text-white px-8 py-3 rounded-xl font-bold hover:bg-red-600 transition-colors shadow-lg shadow-brand-red/20">
+      <p class="text-gray-400 mb-8 max-w-md">{{ t('watchlist.empty_subtitle') || 'Start swiping to find movies or music you want to save.' }}</p>
+      <NuxtLink to="/" class="bg-brand-red text-white px-8 py-3 rounded-xl font-bold hover:bg-red-600 transition-colors shadow-lg shadow-brand-red/20">
         {{ t('home.start_deciding') }}
       </NuxtLink>
     </div>

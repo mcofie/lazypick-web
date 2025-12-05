@@ -82,17 +82,20 @@ export default defineEventHandler(async (event) => {
 
         if (!movies.length) throw new Error("No movies found")
         const movie = movies[Math.floor(Math.random() * movies.length)]
+        if (!movie) throw new Error("No movie selected")
 
         // Fetch Watch Providers
         let providerInfo = null
         try {
-            const providerData = await $fetch<any>(`https://api.themoviedb.org/3/movie/${movie.id}/watch/providers?api_key=${apiKey}`)
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const providerData = await $fetch<{ results: Record<string, { flatrate?: any[] }> }>(`https://api.themoviedb.org/3/movie/${movie.id}/watch/providers?api_key=${apiKey}`)
             const regionProviders = providerData.results[region]
 
             if (regionProviders && regionProviders.flatrate) {
                 // If user filtered by providers, try to match one of them
                 if (providers) {
                     const userProviders = providers.split('|') // '8|9' -> ['8', '9']
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const match = regionProviders.flatrate.find((p: any) => userProviders.includes(p.provider_id.toString()))
                     if (match) providerInfo = match
                 }
@@ -102,7 +105,7 @@ export default defineEventHandler(async (event) => {
                     providerInfo = regionProviders.flatrate[0]
                 }
             }
-        } catch (e) {
+        } catch {
             // Ignore provider fetch errors, just don't show logo
         }
 

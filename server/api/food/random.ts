@@ -1,10 +1,10 @@
-import {defineEventHandler, getQuery} from 'h3'
+import { defineEventHandler, getQuery } from 'h3'
 
 // Updated list with 'moods'
 const restaurants = [
-    {id: 1, name: "Buka Restaurant", cuisine: "Local", area: "Osu", image: "...", moods: ['hungry', 'chill']},
-    {id: 2, name: "Santoku", cuisine: "Japanese", area: "Villagio", image: "...", moods: ['romantic', 'lit']},
-    {id: 3, name: "Papaye", cuisine: "Fast Food", area: "Osu", image: "...", moods: ['hungry', 'lazy']},
+    { id: 1, name: "Buka Restaurant", cuisine: "Local", area: "Osu", image: "...", moods: ['hungry', 'chill'] },
+    { id: 2, name: "Santoku", cuisine: "Japanese", area: "Villagio", image: "...", moods: ['romantic', 'lit'] },
+    { id: 3, name: "Papaye", cuisine: "Fast Food", area: "Osu", image: "...", moods: ['hungry', 'lazy'] },
     {
         id: 4,
         name: "Burger & Relish",
@@ -13,9 +13,9 @@ const restaurants = [
         image: "...",
         moods: ['chill', 'lit', 'hungry']
     },
-    {id: 5, name: "Pinocchio Gelato", cuisine: "Dessert", area: "Osu", image: "...", moods: ['sad', 'romantic']},
-    {id: 6, name: "Sandbox Beach", cuisine: "Beach Club", area: "Labadi", image: "...", moods: ['lit', 'romantic']},
-    {id: 7, name: "KFC", cuisine: "Fast Food", area: "Everywhere", image: "...", moods: ['hungry', 'lazy', 'sad']}
+    { id: 5, name: "Pinocchio Gelato", cuisine: "Dessert", area: "Osu", image: "...", moods: ['sad', 'romantic'] },
+    { id: 6, name: "Sandbox Beach", cuisine: "Beach Club", area: "Labadi", image: "...", moods: ['lit', 'romantic'] },
+    { id: 7, name: "KFC", cuisine: "Fast Food", area: "Everywhere", image: "...", moods: ['hungry', 'lazy', 'sad'] }
 ]
 
 export default defineEventHandler((event) => {
@@ -33,6 +33,9 @@ export default defineEventHandler((event) => {
     if (filtered.length === 0) filtered = restaurants
 
     const random = filtered[Math.floor(Math.random() * filtered.length)]
+    if (!random) {
+        throw createError({ statusCode: 404, statusMessage: 'No restaurant found' })
+    }
 
     return {
         id: random.id,

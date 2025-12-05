@@ -1,0 +1,104 @@
+{
+  "steps": [
+    {
+      "id": "q1_vibe",
+      "question": "It's Friday night. What's the vibe?",
+      "type": "single_select",
+      "options": [
+        {
+          "label": "Netflix & Chill",
+          "icon": "🛋️",
+          "effects": {
+            "global": {
+              "adventure_score": 0.2
+            },
+            "domain_weights": {
+              "movies": {
+                "cozy": 0.8,
+                "thriller": 0.2
+              }
+            }
+          }
+        },
+        {
+          "label": "Adventure Time",
+          "icon": "🧗",
+          "effects": {
+            "global": {
+              "adventure_score": 0.9
+            },
+            "domain_weights": {
+              "food": {
+                "exotic": 0.8
+              },
+              "movies": {
+                "action": 0.8
+              }
+            }
+          }
+        },
+        {
+          "label": "Fancy Dinner",
+          "icon": "🍷",
+          "effects": {
+            "global": {
+              "price_sensitivity": 4
+            },
+            "domain_weights": {
+              "food": {
+                "fine-dining": 0.9,
+                "ambiance": 0.8
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "q2_food_spicy",
+      "question": "How do you handle spice?",
+      "type": "slider",
+      "min_label": "Mild",
+      "max_label": "Fire",
+      "domain": "food",
+      "target_key": "spicy"
+    },
+    {
+      "id": "q3_movie_hate",
+      "question": "Is there anything you absolutely HATE?",
+      "type": "multi_select",
+      "options": [
+        {
+          "label": "Horror",
+          "effects": {
+            "domain_weights": {
+              "movies": {
+                "horror": 0.0
+              }
+            }
+          }
+        },
+        {
+          "label": "Mushy Romance",
+          "effects": {
+            "domain_weights": {
+              "movies": {
+                "romance": 0.1
+              }
+            }
+          }
+        },
+        {
+          "label": "Subtitles",
+          "effects": {
+            "domain_weights": {
+              "movies": {
+                "foreign": 0.0
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -19,7 +19,11 @@ const data = ref<Movie | null>(null)
 const loading = ref(false)
 const error = ref<string | null>(null)
 
-const pageTitle = computed(() => mode.value === 'movie' ? t('decide.find_movie') : t('decide.find_food'))
+const pageTitle = computed(() => {
+  if (mode.value === 'movie') return t('decide.find_movie')
+  if (mode.value === 'music' || mode.value === 'spotify') return 'Find Your Tune'
+  return t('decide.find_food')
+})
 
 const currentVibeLabel = computed(() => {
   const v = vibes.value.find(v => v.id === mood.value)
@@ -27,7 +31,7 @@ const currentVibeLabel = computed(() => {
 })
 
 useHead({
-  title: pageTitle
+  title: pageTitle as unknown as string
 })
 
 // Define Moods (Emojis make it faster to process)
@@ -53,7 +57,10 @@ const spin = async () => {
   data.value = null
 
   try {
-    const endpoint = mode.value === 'movie' ? '/api/movies/random' : '/api/food/random'
+    let endpoint = '/api/movies/random'
+    if (mode.value === 'food') endpoint = '/api/food/random'
+    if (mode.value === 'music' || mode.value === 'spotify') endpoint = '/api/music/random'
+
     const region = useState('region')
     const locale = useState('locale')
     const providers = useState<string[]>('providers')
@@ -71,7 +78,7 @@ const spin = async () => {
     data.value = response as Movie
   } catch (err) {
     console.error(err)
-    error.value = t('decide.error')
+    error.value = t('decide.error') as string
   } finally {
     loading.value = false
   }

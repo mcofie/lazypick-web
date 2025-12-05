@@ -45,47 +45,66 @@ useHead({
         <p class="text-gray-400 text-lg md:text-xl font-light max-w-sm mx-auto leading-relaxed tracking-wide">{{ t('home.tagline') }}</p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 w-full px-2 md:px-0">
 
         <!-- Solo Mode -->
         <NuxtLink
             to="/decide?mode=movie"
-            class="group relative h-64 md:h-80 glass rounded-[2.5rem] overflow-hidden flex flex-col items-center justify-center text-center p-8 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-brand-red/20 border border-white/10 hover:border-brand-red/30 backdrop-blur-2xl">
+            class="group relative h-48 md:h-80 glass rounded-[2rem] md:rounded-[2.5rem] overflow-hidden flex flex-col items-center justify-center text-center p-4 md:p-8 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-brand-red/20 border border-white/10 hover:border-brand-red/30 backdrop-blur-2xl">
           
           <!-- Hover Shine -->
           <div class="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent z-20 pointer-events-none"/>
           
-          <div class="absolute inset-0 bg-gradient-to-br from-brand-red/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
+          <div class="absolute inset-0 bg-gradient-to-br from-brand-red/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"/>
           
           <div class="relative z-10 transform transition-transform duration-500 group-hover:-translate-y-2">
-            <div class="mb-6 p-5 rounded-full bg-white/5 border border-white/10 group-hover:bg-brand-red/20 group-hover:border-brand-red/30 transition-colors duration-300 inline-block backdrop-blur-sm">
-              <Icon name="heroicons:user" size="3.5em" class="text-gray-300 group-hover:text-brand-red transition-colors duration-300"/>
+            <div class="mb-3 md:mb-6 p-3 md:p-5 rounded-full bg-white/5 border border-white/10 group-hover:bg-brand-red/20 group-hover:border-brand-red/30 transition-colors duration-300 inline-block backdrop-blur-sm">
+              <Icon name="heroicons:film" size="2em" class="md:text-[3.5em] text-gray-300 group-hover:text-brand-red transition-colors duration-300"/>
             </div>
-            <h2 class="text-3xl md:text-4xl font-bold font-display mb-2">{{ t('home.solo') }}</h2>
-            <p class="text-sm text-gray-400 font-medium tracking-wide uppercase">{{ t('home.solo_desc') }}</p>
+            <h2 class="text-xl md:text-3xl font-bold font-display mb-1 md:mb-2">Movies & TV</h2>
+            <p class="text-[10px] md:text-sm text-gray-400 font-medium tracking-wide uppercase">Find something to watch</p>
+          </div>
+        </NuxtLink>
+
+        <!-- Music Mode -->
+        <NuxtLink
+            to="/decide?mode=music"
+            class="group relative h-48 md:h-80 glass rounded-[2rem] md:rounded-[2.5rem] overflow-hidden flex flex-col items-center justify-center text-center p-4 md:p-8 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-green-500/20 border border-white/10 hover:border-green-500/30 backdrop-blur-2xl">
+          
+          <!-- Hover Shine -->
+          <div class="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent z-20 pointer-events-none"/>
+
+          <div class="absolute inset-0 bg-gradient-to-br from-green-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"/>
+          
+          <div class="relative z-10 transform transition-transform duration-500 group-hover:-translate-y-2">
+            <div class="mb-3 md:mb-6 p-3 md:p-5 rounded-full bg-white/5 border border-white/10 group-hover:bg-green-500/20 group-hover:border-green-500/30 transition-colors duration-300 inline-block backdrop-blur-sm">
+              <Icon name="heroicons:musical-note" size="2em" class="md:text-[3.5em] text-gray-300 group-hover:text-green-400 transition-colors duration-300"/>
+            </div>
+            <h2 class="text-xl md:text-3xl font-bold font-display mb-1 md:mb-2">Music</h2>
+            <p class="text-[10px] md:text-sm text-gray-400 font-medium tracking-wide uppercase">Discover new tunes</p>
           </div>
         </NuxtLink>
 
         <!-- Squad Mode -->
         <NuxtLink
             to="/squad"
-            class="group relative h-64 md:h-80 glass rounded-[2.5rem] overflow-hidden flex flex-col items-center justify-center text-center p-8 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-500/20 border border-white/10 hover:border-purple-500/30 backdrop-blur-2xl">
+            class="col-span-2 md:col-span-1 group relative h-48 md:h-80 glass rounded-[2rem] md:rounded-[2.5rem] overflow-hidden flex flex-col items-center justify-center text-center p-4 md:p-8 transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl hover:shadow-purple-500/20 border border-white/10 hover:border-purple-500/30 backdrop-blur-2xl">
           
           <!-- Hover Shine -->
           <div class="absolute inset-0 -translate-x-full group-hover:animate-shine bg-gradient-to-r from-transparent via-white/10 to-transparent z-20 pointer-events-none"/>
 
-          <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
+          <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"/>
           
           <div class="relative z-10 transform transition-transform duration-500 group-hover:-translate-y-2">
-            <div class="mb-6 p-5 rounded-full bg-white/5 border border-white/10 group-hover:bg-purple-500/20 group-hover:border-purple-500/30 transition-colors duration-300 inline-block backdrop-blur-sm">
-              <Icon name="heroicons:users" size="3.5em" class="text-gray-300 group-hover:text-purple-400 transition-colors duration-300"/>
+            <div class="mb-3 md:mb-6 p-3 md:p-5 rounded-full bg-white/5 border border-white/10 group-hover:bg-purple-500/20 group-hover:border-purple-500/30 transition-colors duration-300 inline-block backdrop-blur-sm">
+              <Icon name="heroicons:users" size="2em" class="md:text-[3.5em] text-gray-300 group-hover:text-purple-400 transition-colors duration-300"/>
             </div>
-            <h2 class="text-3xl md:text-4xl font-bold font-display mb-2">{{ t('home.squad') }}</h2>
-            <p class="text-sm text-gray-400 font-medium tracking-wide uppercase">{{ t('home.squad_desc') }}</p>
+            <h2 class="text-xl md:text-3xl font-bold font-display mb-1 md:mb-2">Group Pick</h2>
+            <p class="text-[10px] md:text-sm text-gray-400 font-medium tracking-wide uppercase">Decide with friends</p>
           </div>
 
-          <div class="absolute top-6 right-6 z-10">
-            <span class="px-3 py-1 bg-purple-500 text-white text-[10px] font-bold uppercase tracking-widest rounded-full animate-pulse shadow-lg shadow-purple-500/50">{{ t('home.new') }}</span>
+          <div class="absolute top-4 right-4 md:top-6 md:right-6 z-10">
+            <span class="px-2 py-0.5 md:px-3 md:py-1 bg-purple-500 text-white text-[8px] md:text-[10px] font-bold uppercase tracking-widest rounded-full animate-pulse shadow-lg shadow-purple-500/50">{{ t('home.new') }}</span>
           </div>
         </NuxtLink>
 

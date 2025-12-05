@@ -30,7 +30,7 @@ const createLobby = async (mode: 'movie' | 'food') => {
   const code = Math.random().toString(36).substring(2, 8).toUpperCase()
 
   // Create Lobby
-  const { error } = await client.schema('lazypick').from('lobbies').insert({
+  const { error } = await client!.schema('lazypick').from('lobbies').insert({
     code,
     mode,
     status: 'waiting'
@@ -38,9 +38,7 @@ const createLobby = async (mode: 'movie' | 'food') => {
 
   if (error) {
     console.error(error)
-    console.error(error)
     dialog.alert('Failed to create lobby', 'Error')
-    loading.value = false
     loading.value = false
     return
   }
@@ -49,7 +47,7 @@ const createLobby = async (mode: 'movie' | 'food') => {
   const userId = crypto.randomUUID()
   localStorage.setItem(`squad_user_${code}`, userId)
 
-  const { error: partError } = await client.schema('lazypick').from('participants').insert({
+  const { error: partError } = await client!.schema('lazypick').from('participants').insert({
     lobby_code: code,
     name: name.value,
     id: userId
@@ -57,9 +55,7 @@ const createLobby = async (mode: 'movie' | 'food') => {
 
   if (partError) {
     console.error('Participant Insert Error:', partError)
-    console.error('Participant Insert Error:', partError)
     dialog.alert('Failed to join lobby as host', 'Error')
-    loading.value = false
     loading.value = false
     return
   }
@@ -75,14 +71,10 @@ const joinLobby = async () => {
   localStorage.setItem('squad_name', name.value)
 
   // Check if lobby exists
-  const { data: lobby } = await client.schema('lazypick').from('lobbies').select().eq('code', code).single()
+  const { data: lobby } = await client!.schema('lazypick').from('lobbies').select().eq('code', code).single()
   
   if (!lobby) {
-  if (!lobby) {
     dialog.alert('Room not found', 'Error')
-    loading.value = false
-    return
-  }
     loading.value = false
     return
   }
@@ -91,7 +83,7 @@ const joinLobby = async () => {
   const userId = crypto.randomUUID()
   localStorage.setItem(`squad_user_${code}`, userId)
 
-  const { error: joinError } = await client.schema('lazypick').from('participants').insert({
+  const { error: joinError } = await client!.schema('lazypick').from('participants').insert({
     lobby_code: code,
     name: name.value,
     id: userId
@@ -99,9 +91,7 @@ const joinLobby = async () => {
 
   if (joinError) {
     console.error('Join Error:', joinError)
-    console.error('Join Error:', joinError)
     dialog.alert('Failed to join lobby', 'Error')
-    loading.value = false
     loading.value = false
     return
   }
@@ -138,29 +128,33 @@ const joinLobby = async () => {
         
         <div class="space-y-2">
           <label class="text-xs font-bold uppercase tracking-widest text-gray-500 ml-1">{{ t('squad.your_name') }}</label>
-          <input v-model="name" type="text" :placeholder="t('squad.name_placeholder')" 
-                 @keyup.enter="createLobby('movie')"
-                 class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-red/50 focus:bg-white/10 transition-all text-lg font-medium">
+          <input
+v-model="name" type="text" :placeholder="t('squad.name_placeholder') as string" 
+                 class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-red/50 focus:bg-white/10 transition-all text-lg font-medium"
+                 @keyup.enter="createLobby('movie')">
         </div>
 
         <div>
-          <button @click="createLobby('movie')" :disabled="loading"
-                  class="w-full py-4 bg-brand-red rounded-xl font-bold text-lg hover:bg-red-600 hover:scale-[1.02] hover:shadow-xl hover:shadow-brand-red/20 transition-all duration-300 font-display tracking-wide flex items-center justify-center gap-2">
+          <button
+:disabled="loading" class="w-full py-4 bg-brand-red rounded-xl font-bold text-lg hover:bg-red-600 hover:scale-[1.02] hover:shadow-xl hover:shadow-brand-red/20 transition-all duration-300 font-display tracking-wide flex items-center justify-center gap-2"
+                  @click="createLobby('movie')">
             <Icon name="heroicons:plus-circle" class="w-6 h-6"/>
             <span>{{ t('squad.create_squad') }}</span>
           </button>
         </div>
 
         <div class="relative py-2">
-          <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"></div></div>
+          <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-white/10"/></div>
           <div class="relative flex justify-center"><span class="bg-brand-surface px-4 text-xs text-gray-500 uppercase tracking-widest font-bold">{{ t('squad.or_join') }}</span></div>
         </div>
 
         <div class="flex flex-col sm:flex-row gap-3">
-          <input v-model="roomCode" type="text" :placeholder="t('squad.room_code')" maxlength="6"
+          <input
+v-model="roomCode" type="text" :placeholder="t('squad.room_code') as string" maxlength="6"
                  class="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-brand-red/50 focus:bg-white/10 transition-all text-lg font-medium uppercase tracking-widest text-center">
-          <button @click="joinLobby" :disabled="loading"
-                  class="bg-white text-black font-bold px-6 py-3 sm:py-0 rounded-xl hover:bg-gray-200 transition-colors font-display tracking-wide w-full sm:w-auto">
+          <button
+:disabled="loading" class="bg-white text-black font-bold px-6 py-3 sm:py-0 rounded-xl hover:bg-gray-200 transition-colors font-display tracking-wide w-full sm:w-auto"
+                  @click="joinLobby">
             {{ t('squad.enter_room') }}
           </button>
         </div>

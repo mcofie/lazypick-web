@@ -9,11 +9,10 @@ export default defineNuxtConfig({
         '@vite-pwa/nuxt'
     ],
     css: ['~/assets/css/main.css'],
-    vite: {
-        ssr: {
-            noExternal: ['@supabase/supabase-js']
-        }
+    build: {
+        transpile: ['@supabase/supabase-js']
     },
+
 
     // 2. Head Configuration (SEO & Mobile feel)
     app: {
@@ -82,6 +81,9 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         tmdbApiKey: process.env.TMDB_API_KEY, // Server-side only (secure)
+        spotifyClientId: process.env.SPOTIFY_CLIENT_ID,
+        spotifyClientSecret: process.env.SPOTIFY_CLIENT_SECRET,
+        appleMusicDeveloperToken: process.env.APPLE_MUSIC_DEVELOPER_TOKEN,
         public: {
             posthogPublicKey: 'phc_avqcCjLiEY3ZRFLguGI80JVmPxJOu0pN7bWVO1m96Mm',
             posthogHost: 'https://us.i.posthog.com',
@@ -97,5 +99,12 @@ export default defineNuxtConfig({
     },
     nitro: {
         compressPublicAssets: true
+    },
+    vite: {
+        resolve: {
+            alias: {
+                '@supabase/supabase-js': '@supabase/supabase-js/dist/module/index.js'
+            }
+        }
     }
 })

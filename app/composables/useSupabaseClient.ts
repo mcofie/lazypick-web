@@ -1,7 +1,10 @@
 
 import { createClient } from '@supabase/supabase-js'
 
-let supabaseInstance: any = null
+import type { SupabaseClient } from '@supabase/supabase-js'
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let supabaseInstance: SupabaseClient<any, "lazypick", any> | null = null
 
 export const useSupabaseClient = () => {
     const config = useRuntimeConfig()

@@ -5,11 +5,11 @@ export const useTranslations = () => {
 
     const t = (key: string) => {
         const keys = key.split('.')
-        let value: any = translations[locale.value as keyof typeof translations]
+        let value: unknown = translations[locale.value as keyof typeof translations]
 
         for (const k of keys) {
-            if (value && value[k]) {
-                value = value[k]
+            if (value && (value as Record<string, unknown>)[k]) {
+                value = (value as Record<string, unknown>)[k]
             } else {
                 return key // Fallback to key if not found
             }
